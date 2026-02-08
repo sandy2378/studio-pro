@@ -79,7 +79,8 @@
             z-index: 10; border: 2px solid white; transition: all 0.3s;
         }
         .delete-badge:hover { background: #e74c3c; transform: scale(1.1); }
-
+          .delete-badge { display: none !important; } /* Caché par défaut */
+.admin-mode .delete-badge { display: flex !important; } /* Visible seulement en mode admin */
         .bg-blue { background: #2563eb; }
         .bg-green { background: #27ae60; }
         .bg-orange { background: #f39c12; }
@@ -107,8 +108,8 @@
 </head>
 <body> 
 
-    <h2 style="color:#2563eb; margin: 10px 0;">2 Studio Premium Pro</h2> 
-
+    
+     <h2 onclick="activerAdmin()" style="color:#2563eb; margin: 10px 0; cursor:pointer;">2 Studio Premium Pro</h2>
     <div class="menu-choix" id="menu-container">
         <div class="cat-title">Modèles Classiques</div>
         <button class="tab-btn active" onclick="changerStyle('mariage', this)">💍 Mariage</button>
@@ -361,16 +362,33 @@
             menu.appendChild(container);
         });
     }
-
+     
+    
     function supprimerModele(id, e) {
-        e.stopPropagation();
-        if(confirm("Supprimer ce modèle ?")) {
+    e.stopPropagation();
+    
+    // On demande un code secret avant de permettre la suppression
+    const codeSecurite = prompt("Entrez le code ADMIN pour supprimer ce modèle :");
+    
+    if(codeSecurite === "ADMIN123") { // Tu peux changer "ADMIN123" par ton code
+        if(confirm("Confirmer la suppression définitive ?")) {
             delete mesModeles[id];
             localStorage.setItem('studio_mega_v6', JSON.stringify(mesModeles));
             actualiserMenu();
+            alert("Modèle supprimé.");
         }
+    } else {
+        alert("Action refusée : Code incorrect.");
     }
-
+}
+        let clickCount = 0;
+function activerAdmin() {
+    clickCount++;
+    if(clickCount >= 5) {
+        document.body.classList.add('admin-mode');
+        alert("Mode édition activé : Les boutons de suppression sont visibles.");
+    }
+}
     function loadBackground(e) { const reader = new FileReader(); reader.onload = (ev) => { currentBg = ev.target.result; maj(); }; reader.readAsDataURL(e.target.files[0]); } 
     function loadLogo(e) { const reader = new FileReader(); reader.onload = (ev) => { currentLogo = ev.target.result; maj(); }; reader.readAsDataURL(e.target.files[0]); } 
     function payer() { 
@@ -465,6 +483,7 @@
 </script>
 </body>
 </html>
+
 
 
 
