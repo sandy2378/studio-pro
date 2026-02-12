@@ -12,9 +12,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Playfair+Display:wght@700&family=Montserrat:wght@400;700&family=Pacifico&family=Oswald:wght@700&display=swap" rel="stylesheet">
-    <link rel="apple-touch-icon" href="icon.png">
-    <link rel="icon" type="image/png" href="icon.png">
-    <link rel="manifest" href="manifest.json">
 
     <style>
         * { box-sizing: border-box; }
@@ -28,70 +25,58 @@
         input, textarea, select { width: 100%; padding: 10px; margin-bottom: 8px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; }
         label { font-size: 11px; font-weight: bold; color: #444; }
         .preview-area { width: 100%; background: transparent; padding: 0; margin: 20px 0; display: flex; justify-content: center; overflow-x: auto; }
+        
         #doc-final {
             width: 340px; height: 480px;
             display: flex; flex-direction: column;
             background-size: cover; background-position: center; background-repeat: no-repeat;
             position: relative; border: none !important; box-shadow: none !important; overflow: hidden;
-            background-color: #ffffff;
-            transition: all 0.2s ease;
+            background-color: #ffffff; transition: all 0.2s ease;
         }
         #doc-final.landscape { width: 480px !important; height: 300px !important; }
-        .watermark {
-            position: absolute; top: 50%; left: 50%;
-            transform: translate(-50%, -50%) rotate(-45deg);
-            font-size: 40px; color: rgba(0,0,0,0.1);
-            font-weight: bold; pointer-events: none;
-            white-space: nowrap; z-index: 10;
-            display: block; border: 4px solid rgba(0,0,0,0.1); padding: 10px;
-        }
+
+        .watermark { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-45deg); font-size: 40px; color: rgba(0,0,0,0.1); font-weight: bold; pointer-events: none; white-space: nowrap; z-index: 10; display: block; border: 4px solid rgba(0,0,0,0.1); padding: 10px; }
         .content-box { width: 100%; padding: 0 20px; color: inherit; z-index: 2; position: relative; }
-        .style-mariage { background-color: #fffaf0 !important; }
+
+        /* TES STYLES QUE TU NE VOYAIS PLUS */
+        .style-mariage { background-color: #fffaf0 !important; border: 10px double #f3e5ab !important; }
+        .style-royal { background-color: #fdf2f2 !important; border-top: 15px solid #b8860b !important; }
+        .style-anniv { background-color: #e3f2fd !important; }
+        .style-visite { height: 210px !important; width: 380px !important; background-color: #ffffff !important; border-left: 15px solid #2563eb !important; }
+        .style-luxe { background-color: #000000 !important; color: #d4af37 !important; }
+        .style-evenement { background-color: #f3e5f5 !important; border-bottom: 15px solid #8e44ad !important; }
+
         .btn-group { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
         .btn-action { padding: 12px; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; color: white; font-size: 11px; }
-        .btn-custom-container { display: inline-block; position: relative; width: 100%; }
-        .delete-badge {
-            position: absolute; top: -5px; right: -5px;
-            background: #bdc3c7; color: white; border-radius: 50%;
-            width: 22px; height: 22px; display: flex; align-items: center; justify-content: center;
-            cursor: pointer; font-size: 14px; font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-            z-index: 10; border: 2px solid white; display: none !important;
-        }
-        .admin-mode .delete-badge { display: flex !important; }
-        .bg-blue { background: #2563eb; }
-        .bg-green { background: #27ae60; }
-        .bg-orange { background: #f39c12; }
-        .bg-red { background: #e74c3c; }
-        .bg-purple { background: #6c5ce7; }
-        .align-group { display: flex; gap: 5px; margin-bottom: 10px; }
-        .align-btn { flex: 1; padding: 8px; border: 1px solid #ddd; border-radius: 5px; background: white; cursor: pointer; font-size: 12px; }
-        .align-btn.active { background: #eee; border-color: #999; }
-        .admin-panel { background: #2d3436; padding: 15px; border-radius: 15px; color: white; margin-top: 20px; width: 100%; }
-        .file-label { display: block; background: #6c5ce7; color: white; padding: 10px; border-radius: 8px; text-align: center; cursor: pointer; font-size: 11px; margin-top: 5px; }
-        .security-panel { background: #34495e; color: white; padding: 15px; border-radius: 15px; margin-top: 20px; width: 100%; }
-        @keyframes pulse-success { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
-        .unlocked { animation: pulse-success 0.5s ease-in-out; border: 5px solid #27ae60 !important; }
+        .bg-blue { background: #2563eb; } .bg-green { background: #27ae60; } .bg-orange { background: #f39c12; } .bg-red { background: #e74c3c; } .bg-purple { background: #6c5ce7; }
+        .file-label { display: block; background: #6c5ce7; color: white; padding: 10px; border-radius: 8px; text-align: center; cursor: pointer; font-size: 11px; }
+        .admin-panel, .security-panel { background: #34495e; color: white; padding: 15px; border-radius: 15px; margin-top: 20px; width: 100%; }
     </style>
 </head>
 <body>
 
     <h2 onclick="activerAdmin()" style="color:#2563eb; margin: 10px 0; cursor:pointer;">2 Studio Premium Pro</h2>
-    
+
     <div class="menu-choix" id="menu-container">
         <div class="cat-title">💎 Collection Prestige</div>
         <button class="tab-btn" onclick="changerStyle('fond1', this)">⭐ Or Impérial</button>
         <button class="tab-btn" onclick="changerStyle('fond2', this)">⭐ Argent Chic</button>
         <button class="tab-btn" onclick="changerStyle('fond3', this)">⭐ Noir Carbone</button>
         <button class="tab-btn" onclick="changerStyle('fond4', this)">⭐ Business Élite</button>
+        <button class="tab-btn" onclick="changerStyle('fond11', this)">✨ Sky Horizon</button>
 
         <div class="cat-title">✨ Collection Expert</div>
-        <button class="tab-btn" onclick="changerStyle('fond11', this)">✨ Sky Horizon</button>
-        <button class="tab-btn" onclick="changerStyle('green', this)">✨ Green Nature</button>
+        <button class="tab-btn" onclick="changerStyle('custom-11', this)">⭐ Sky Horizon</button>
+        <button class="tab-btn" onclick="changerStyle('custom-12', this)">⭐ Green Nature</button>
 
         <div class="cat-title">💍 Mariage & Événements</div>
         <button class="tab-btn active" onclick="changerStyle('mariage', this)">💍 Mariage Chic</button>
         <button class="tab-btn" onclick="changerStyle('rosez', this)">🌹 Éclat Floral</button>
-        <button class="tab-btn" onclick="changerStyle('coeur-violet', this)">💜 Passion Violette</button>
+        <button class="tab-btn" onclick="changerStyle('royal', this)">👑 Royal Gold</button>
+        <button class="tab-btn" onclick="changerStyle('anniv', this)">🎂 Fête & Cadeau</button>
+        <button class="tab-btn" onclick="changerStyle('evenement', this)">🎭 Gala</button>
+        <button class="tab-btn" onclick="changerStyle('visite', this)">💳 Carte Visite</button>
+        <button class="tab-btn" onclick="changerStyle('luxe', this)">💎 Luxe Noir</button>
         
         <div id="cat-custom" class="cat-title" style="display:none;">Ajouts Récents</div>
     </div>
@@ -101,38 +86,32 @@
             <input type="text" id="in1" placeholder="Titre / Nom" oninput="maj()">
             <input type="text" id="in2" placeholder="Sous-titre" oninput="maj()">
             <textarea id="in4" placeholder="Votre message..." oninput="maj()"></textarea>
-
-            <label>Lien QR Code</label>
-            <input type="text" id="qr-link" placeholder="https://..." oninput="maj()">
-
+            
+            <label>QR Code</label>
+            <input type="text" id="qr-link" placeholder="Lien WhatsApp..." oninput="maj()">
+            
             <button class="btn-action bg-purple" style="width:100%; margin-bottom:10px;" onclick="toggleRotation()">🔄 PIVOTER CARTE</button>
 
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                <div>
-                    <label>Police</label>
-                    <select id="font-select" onchange="maj()">
-                        <option value="'Montserrat'">Moderne</option>
-                        <option value="'Dancing Script'">Élégante</option>
-                        <option value="'Pacifico'">Manuscrit</option>
-                    </select>
-                </div>
-                <div>
-                    <label>Couleur</label>
-                    <select id="color-select" onchange="maj()">
-                        <option value="#1a1a1a">Noir</option>
-                        <option value="#ffffff">Blanc</option>
-                        <option value="#b8860b">Or</option>
-                    </select>
-                </div>
+                <select id="font-select" onchange="maj()">
+                    <option value="'Montserrat'">Moderne</option>
+                    <option value="'Dancing Script'">Élégante</option>
+                    <option value="'Pacifico'">Manuscrit</option>
+                </select>
+                <select id="color-select" onchange="maj()">
+                    <option value="#1a1a1a">Noir</option>
+                    <option value="#ffffff">Blanc</option>
+                    <option value="#b8860b">Or</option>
+                </select>
             </div>
-
+            
             <label>Position Verticale</label>
             <input type="range" id="pos-y" min="0" max="400" value="150" oninput="maj()">
 
             <div class="btn-group">
-                <button class="btn-action bg-blue" onclick="telechargerImage()">📥 IMAGE (PNG)</button>
-                <button id="btn-payer" class="btn-action bg-green" onclick="payer()">💳 PAYER PDF</button>
-                <button id="btn-pdf" class="btn-action bg-orange" onclick="genererPDF()" disabled style="opacity:0.5;">📄 PDF PRO</button>
+                <button class="btn-action bg-blue" onclick="telechargerImage()">📥 IMAGE</button>
+                <button class="btn-action bg-green" onclick="payer()">💳 PAYER</button>
+                <button id="btn-pdf" class="btn-action bg-orange" onclick="genererPDF()" disabled style="opacity:0.5;">📄 PDF</button>
                 <button class="btn-action bg-red" onclick="location.reload()">🔄 Reset</button>
             </div>
         </div>
@@ -140,125 +119,67 @@
         <div class="preview-area">
             <div id="doc-final" class="style-mariage"></div>
         </div>
-
-        <div class="admin-panel">
-            <h4>🛠️ Ajouter Modèle Perso</h4>
-            <input type="text" id="admin-name" placeholder="Nom">
-            <label class="file-label">📸 Choisir Image<input type="file" id="admin-file" accept="image/*" style="display:none"></label>
-            <button onclick="sauvegarderNouveauModele()" style="width:100%; padding:10px; margin-top:10px;">💾 Enregistrer</button>
-        </div>
     </div>
 
     <script>
-    let currentBg = "";
-    let currentLogo = "";
-    let textAlign = "center";
-    let isPaid = false;
-    let modeImpression = false;
-    let mesModeles = JSON.parse(localStorage.getItem('studio_mega_v6')) || {};
+        let currentBg = "";
+        let isPaid = false;
+        let mesModeles = JSON.parse(localStorage.getItem('studio_mega_v6')) || {};
 
-    // RÉPARATION : Cette fonction gère maintenant correctement vos images GitHub
-    function changerStyle(type, btn) {
-        const doc = document.getElementById('doc-final');
-        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-        if(btn) btn.classList.add('active');
+        function changerStyle(type, btn) {
+            const doc = document.getElementById('doc-final');
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            if(btn) btn.classList.add('active');
 
-        // URL de base de vos images sur GitHub
-        const githubPath = "https://sandy2378.github.io/studio-pro/images/";
+            // ON NETTOIE LES ANCIENS STYLES
+            doc.className = "";
+            currentBg = "";
 
-        if (mesModeles[type]) {
-            currentBg = mesModeles[type].img; // Modèle perso
-        } else {
-            // Modèles officiels (ajoute .jpg automatiquement)
-            currentBg = githubPath + type + ".jpg";
-        }
-        maj();
-    }
+            const githubPath = "https://sandy2378.github.io/studio-pro/images/";
 
-    function maj() {
-        const doc = document.getElementById('doc-final');
-        let color = document.getElementById('color-select').value;
-        let font = document.getElementById('font-select').value;
-        let posY = document.getElementById('pos-y').value;
-
-        doc.style.backgroundImage = currentBg ? `url('${currentBg}')` : "none";
-        doc.style.fontFamily = font;
-        doc.style.color = color;
-        doc.style.paddingTop = posY + "px";
-        doc.style.textAlign = textAlign;
-
-        doc.innerHTML = `
-            ${(!isPaid) ? '<div class="watermark">PREVIEW</div>' : ''}
-            <div class="content-box">
-                <h2 style="margin:5px; font-size:32px;">${document.getElementById('in1').value || 'NOM'}</h2>
-                <h3 style="margin:5px; font-size:18px;">${document.getElementById('in2').value || 'Sous-titre'}</h3>
-                <p style="font-size:14px; margin-top:10px;">${document.getElementById('in4').value || ''}</p>
-                <div id="qrcode" style="display:flex; justify-content:center; margin-top:10px;"></div>
-            </div>`;
-            
-        let qrLink = document.getElementById('qr-link').value;
-        if (qrLink) {
-            new QRCode(document.getElementById("qrcode"), { text: qrLink, width: 60, height: 60 });
-        }
-    }
-
-    function toggleRotation() { document.getElementById('doc-final').classList.toggle('landscape'); maj(); }
-    function activerAdmin() { if(++clickCount >= 5) { document.body.classList.add('admin-mode'); alert("Mode Admin"); } }
-    let clickCount = 0;
-
-    async function telechargerImage() {
-        const canvas = await html2canvas(document.getElementById('doc-final'), { scale: 3, useCORS: true });
-        const link = document.createElement('a');
-        link.download = 'studio_pro.png';
-        link.href = canvas.toDataURL();
-        link.click();
-    }
-
-    function payer() {
-        alert("Paiement : 10 DT vers l'IBAN RIM AYARI");
-        window.open("https://wa.me/21646248269?text=Paiement", "_blank");
-        let code = prompt("Entrez le code reçu :");
-        if(code === "VIP2026") { isPaid = true; document.getElementById('btn-pdf').disabled = false; document.getElementById('btn-pdf').style.opacity = "1"; maj(); }
-    }
-
-    async function genererPDF() {
-        const el = document.getElementById('doc-final');
-        const canvas = await html2canvas(el, { scale: 2, useCORS: true });
-        const { jsPDF } = window.jspdf;
-        const pdf = new jsPDF(el.offsetWidth > el.offsetHeight ? 'l' : 'p', 'px', [el.offsetWidth, el.offsetHeight]);
-        pdf.addImage(canvas.toDataURL('image/jpeg'), 'JPEG', 0, 0, el.offsetWidth, el.offsetHeight);
-        pdf.save("document.pdf");
-    }
-
-    function sauvegarderNouveauModele() {
-        const name = document.getElementById('admin-name').value;
-        const file = document.getElementById('admin-file').files[0];
-        if(!name || !file) return;
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            const id = "custom-" + Date.now();
-            mesModeles[id] = { name: name, img: e.target.result };
-            localStorage.setItem('studio_mega_v6', JSON.stringify(mesModeles));
-            actualiserMenu();
-        };
-        reader.readAsDataURL(file);
-    }
-
-    function actualiserMenu() {
-        const menu = document.getElementById('menu-container');
-        Object.keys(mesModeles).forEach(id => {
-            if(!document.getElementById('btn-'+id)) {
-                const btn = document.createElement('button');
-                btn.id = 'btn-'+id;
-                btn.className = "tab-btn";
-                btn.onclick = () => changerStyle(id, btn);
-                btn.innerText = "⭐ " + mesModeles[id].name;
-                menu.appendChild(btn);
+            // GESTION DES IMAGES GITHUB
+            if(type.startsWith('fond') || type === 'rosez' || type === 'mariage') {
+                currentBg = githubPath + type + ".jpg";
+            } 
+            // GESTION DES STYLES CSS (TON CODE ORIGINAL)
+            else if(['royal', 'anniv', 'evenement', 'visite', 'luxe', 'mariage'].includes(type)) {
+                doc.classList.add('style-' + type);
             }
-        });
-    }
+            // GESTION DES PERSONNALISÉS
+            else if(mesModeles[type]) {
+                currentBg = mesModeles[type].img;
+            }
+            
+            maj();
+        }
 
-    window.onload = () => { actualiserMenu(); maj(); };
+        function maj() {
+            const doc = document.getElementById('doc-final');
+            doc.style.backgroundImage = currentBg ? `url('${currentBg}')` : "none";
+            doc.style.fontFamily = document.getElementById('font-select').value;
+            doc.style.color = document.getElementById('color-select').value;
+            doc.style.paddingTop = document.getElementById('pos-y').value + "px";
+            doc.style.textAlign = "center";
+
+            doc.innerHTML = `
+                ${(!isPaid) ? '<div class="watermark">PREVIEW</div>' : ''}
+                <div class="content-box">
+                    <h2>${document.getElementById('in1').value || 'NOM'}</h2>
+                    <h3>${document.getElementById('in2').value || 'Sous-titre'}</h3>
+                    <p>${document.getElementById('in4').value || ''}</p>
+                    <div id="qrcode" style="display:flex; justify-content:center; margin-top:10px;"></div>
+                </div>`;
+            
+            let q = document.getElementById('qr-link').value;
+            if(q) new QRCode(document.getElementById("qrcode"), { text: q, width: 70, height: 70 });
+        }
+
+        function toggleRotation() { document.getElementById('doc-final').classList.toggle('landscape'); maj(); }
+        async function telechargerImage() { const canvas = await html2canvas(document.getElementById('doc-final'), { scale: 3, useCORS: true }); const l = document.createElement('a'); l.download = 'creation.png'; l.href = canvas.toDataURL(); l.click(); }
+        function payer() { window.open("https://wa.me/21646248269", "_blank"); if(prompt("Code ?") === "VIP2026") { isPaid = true; document.getElementById('btn-pdf').disabled = false; document.getElementById('btn-pdf').style.opacity="1"; maj(); } }
+        async function genererPDF() { const el = document.getElementById('doc-final'); const canvas = await html2canvas(el, { scale: 3, useCORS: true }); const { jsPDF } = window.jspdf; const pdf = new jsPDF('p', 'px', [el.offsetWidth, el.offsetHeight]); pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, el.offsetWidth, el.offsetHeight); pdf.save("document.pdf"); }
+        
+        window.onload = maj;
     </script>
 </body>
 </html>
