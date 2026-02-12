@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
@@ -105,14 +105,15 @@
     <h2 onclick="activerAdmin()" style="color:#2563eb; margin: 10px 0; cursor:pointer;">Studio Premium Pro</h2>
 
     <div class="menu-choix" id="menu-container">
-        <div class="cat-title">💎 Collection Prestige (1-10)</div>
-        <button class="tab-btn" onclick="changerStyle('fond1', this)">⭐ Or Impérial</button>
-        <button class="tab-btn" onclick="changerStyle('fond2', this)">⭐ Argent Chic</button>
-        <button class="tab-btn" onclick="changerStyle('fond3', this)">⭐ Noir Carbone</button>
-        <button class="tab-btn" onclick="changerStyle('fond4', this)">⭐ Business Élite</button>
-        <button class="tab-btn" onclick="changerStyle('fond11', this)">✨ Sky Horizon</button>
-        <button class="tab-btn" onclick="changerStyle('green', this)">✨ Green Nature</button>
-
+        
+        <div class="cat-title">💎 Cartes de Visite</div>
+<button class="tab-btn" onclick="changerStyle('fond1', this)">📇 Visite 1</button>
+<button class="tab-btn" onclick="changerStyle('visite2', this)">📇 Visite 2</button>
+<button class="tab-btn" onclick="changerStyle('visite3', this)">📇 Visite 3</button>
+<button class="tab-btn" onclick="changerStyle('visite4', this)">📇 Visite 4</button>
+<button class="tab-btn" onclick="changerStyle('visite5', this)">📇 Visite 5</button>
+<button class="tab-btn" onclick="changerStyle('visite6', this)">📇 Visite 6</button>
+<button class="tab-btn" onclick="changerStyle('visite7', this)">📇 Visite 7</button>
         <div class="cat-title">✨ Collection Expert (11-21)</div>
         <button class="tab-btn" onclick="changerStyle('custom-11', this)">⭐ Sky Horizon</button>
         <button class="tab-btn" onclick="changerStyle('custom-12', this)">⭐ Green Nature</button>
@@ -270,30 +271,8 @@
         maj();
     }
 
-    function changerStyle(type, btn) { 
-        const doc = document.getElementById('doc-final'); 
-        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active')); 
-        if(btn) btn.classList.add('active'); 
-        
-        const githubPath = "https://sandy2378.github.io/studio-pro/images/"; 
-
-        // Réinitialisation des classes de style spécifiques
-        doc.className = ""; 
-        if(document.getElementById('doc-final').classList.contains('landscape')) doc.classList.add('landscape');
-
-        if(type.startsWith('fond')) { 
-            currentBg = githubPath + type + ".jpg"; 
-        } else if(type === 'green' || type === 'mariage' || type === 'rosez' || type === 'royal') { 
-            currentBg = githubPath + type + ".jpg"; 
-        } else if(mesModeles[type]) {
-            currentBg = mesModeles[type].img;
-        } else { 
-            doc.classList.add("style-" + type); 
-            currentBg = ""; 
-        } 
-        maj(); 
-    }
-
+    
+function changerStyle(type, btn) { const githubPath = "https://sandy2378.github.io/studio-pro/images/"; document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active')); if(btn) btn.classList.add('active'); // On vérifie si c'est un fond standard, une carte visite ou un modèle spécial if (type.startsWith('fond') || type.startsWith('visite') || ['mariage','Romance','Eclat','Passion','Royal','Fete','gala'].includes(type)) { // On ajoute .jpg à la fin du nom currentBg = githubPath + type + ".jpg"; } else if(mesModeles[type]) { // Si c'est un modèle ajouté manuellement currentBg = mesModeles[type].img; } maj(); // On met à jour l'affichage }
     function maj() {
         const doc = document.getElementById('doc-final');
         let color = document.getElementById('color-select').value;
@@ -473,3 +452,4 @@
 </script>
 </body>
 </html>
+
