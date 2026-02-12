@@ -286,23 +286,8 @@
         maj();
     } 
 
-    function changerStyle(type, btn) {
-        const doc = document.getElementById('doc-final');
-        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-        if(btn) btn.classList.add('active');
-        
-        if(type === 'visite') doc.classList.add('landscape');
-        else if(['mariage','royal','anniv','cv-pro','evenement'].includes(type)) doc.classList.remove('landscape');
 
-        if(mesModeles[type]) {
-            currentBg = mesModeles[type].img; 
-            doc.className = (doc.classList.contains('landscape') ? "landscape" : "");
-        } else {
-            doc.className = "style-" + type + (doc.classList.contains('landscape') ? " landscape" : "");
-            currentBg = "";
-        }
-        maj();
-    } 
+   function changerStyle(type, btn) { const doc = document.getElementById('doc-final'); // On retire la sélection du bouton précédent document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active')); if(btn) btn.classList.add('active'); // Chemin vers votre dossier d'images GitHub const githubPath = "https://sandy2378.github.io/studio-pro/images/"; // Système automatique : si on clique sur fond1, il cherche fond1.jpg if(type.startsWith('fond')) { currentBg = githubPath + type + ".jpg"; } // Cas particuliers pour les noms de collections else if(type === 'green') { currentBg = githubPath + "green.jpg"; } else if(type === 'mariage') { currentBg = githubPath + "mariage.jpg"; } else { // Pour les styles qui n'ont pas encore d'image GitHub doc.className = "style-" + type; currentBg = ""; } maj(); // On rafraîchit la carte }
 
     function maj() {
         const doc = document.getElementById('doc-final');
@@ -514,6 +499,7 @@ function activerAdmin() {
 </script>
 </body>
 </html>
+
 
 
 
