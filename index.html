@@ -267,11 +267,9 @@
         e.target.classList.add('active');
         maj();
     }
-
+function changerStyle(type, btn) { const doc = document.getElementById('doc-final'); const githubPath = "https://sandy2378.github.io/studio-pro/images/"; // Nettoyage visuel document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active')); if(btn) btn.classList.add('active'); doc.className = ""; if(doc.classList.contains('landscape')) doc.classList.add('landscape'); // ÉTAPE 1 : On regarde si c'est un ajout récent (sauvegardé dans votre navigateur) if (mesModeles && mesModeles[type]) { currentBg = mesModeles[type].img; } // ÉTAPE 2 : Sinon, on va chercher sur GitHub else { // On ajoute .jpg automatiquement au nom que vous avez mis dans le bouton currentBg = githubPath + type + ".jpg"; } maj(); }
     
 
-   function changerStyle(type, btn) { const doc = document.getElementById('doc-final'); const githubPath = "https://sandy2378.github.io/studio-pro/images/"; // 1. Gérer l'apparence des boutons document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active')); if(btn) btn.classList.add('active'); // 2. Réinitialiser les styles CSS (bordures, etc.) doc.className = ""; if(doc.classList.contains('landscape')) doc.classList.add('landscape'); // 3. Vérifier la source de l'image if (mesModeles[type]) { // --- C'EST ICI QUE JE GARDE VOS AJOUTS RÉCENTS --- currentBg = mesModeles[type].img; } else if (type.startsWith('fond') || type.startsWith('visite') || ['mariage','Romance','Eclat','Passion','Royal','Fete','gala'].includes(type)) { // --- C'EST ICI QUE JE CHARGE VOS IMAGES GITHUB --- currentBg = githubPath + type + ".jpg"; } else { // Pour les styles classiques sans image (ex: style-luxe) doc.classList.add("style-" + type); currentBg = ""; } maj(); // On rafraîchit la carte }
-          function maj() {
         const doc = document.getElementById('doc-final');
         let color = document.getElementById('color-select').value;
         let font = document.getElementById('font-select').value;
@@ -450,6 +448,7 @@
 </script>
 </body>
 </html>
+
 
 
 
