@@ -12,6 +12,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Playfair+Display:wght@700&family=Montserrat:wght@400;700&family=Pacifico&family=Oswald:wght@700&display=swap" rel="stylesheet">
+    <link rel="apple-touch-icon" href="icon.png">
+    <link rel="icon" type="image/png" href="icon.png">
+    <link rel="manifest" href="manifest.json">
 
     <style>
         * { box-sizing: border-box; }
@@ -43,6 +46,7 @@
             display: block; border: 4px solid rgba(0,0,0,0.1); padding: 10px;
         }
         .content-box { width: 100%; padding: 0 20px; color: inherit; z-index: 2; position: relative; }
+        .style-mariage { background-color: #fffaf0 !important; }
         .btn-group { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
         .btn-action { padding: 12px; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; color: white; font-size: 11px; }
         .btn-custom-container { display: inline-block; position: relative; width: 100%; }
@@ -64,7 +68,7 @@
         .align-btn.active { background: #eee; border-color: #999; }
         .admin-panel { background: #2d3436; padding: 15px; border-radius: 15px; color: white; margin-top: 20px; width: 100%; }
         .file-label { display: block; background: #6c5ce7; color: white; padding: 10px; border-radius: 8px; text-align: center; cursor: pointer; font-size: 11px; margin-top: 5px; }
-        .security-panel { background: #34495e; color: white; padding: 15px; border-radius: 15px; margin-top: 20px; width: 100%; max-width: 420px; }
+        .security-panel { background: #34495e; color: white; padding: 15px; border-radius: 15px; margin-top: 20px; width: 100%; }
         @keyframes pulse-success { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
         .unlocked { animation: pulse-success 0.5s ease-in-out; border: 5px solid #27ae60 !important; }
     </style>
@@ -72,27 +76,22 @@
 <body>
 
     <h2 onclick="activerAdmin()" style="color:#2563eb; margin: 10px 0; cursor:pointer;">2 Studio Premium Pro</h2>
-
+    
     <div class="menu-choix" id="menu-container">
-        <div class="cat-title">💎 Collection Prestige (1-10)</div>
+        <div class="cat-title">💎 Collection Prestige</div>
         <button class="tab-btn" onclick="changerStyle('fond1', this)">⭐ Or Impérial</button>
         <button class="tab-btn" onclick="changerStyle('fond2', this)">⭐ Argent Chic</button>
         <button class="tab-btn" onclick="changerStyle('fond3', this)">⭐ Noir Carbone</button>
         <button class="tab-btn" onclick="changerStyle('fond4', this)">⭐ Business Élite</button>
-        <button class="tab-btn" onclick="changerStyle('fond5', this)">⭐ Gold Line</button>
-        <button class="tab-btn" onclick="changerStyle('fond6', this)">⭐ Pure White</button>
 
-        <div class="cat-title">✨ Collection Expert (11-21)</div>
-        <button class="tab-btn" onclick="changerStyle('fond11', this)">⭐ Sky Horizon</button>
-        <button class="tab-btn" onclick="changerStyle('green', this)">⭐ Green Nature</button>
-        <button class="tab-btn" onclick="changerStyle('fond13', this)">⭐ Red Passion</button>
-        <button class="tab-btn" onclick="changerStyle('fond18', this)">⭐ Black & Gold</button>
-        <button class="tab-btn" onclick="changerStyle('fond21', this)">⭐ L'Essentiel</button>
+        <div class="cat-title">✨ Collection Expert</div>
+        <button class="tab-btn" onclick="changerStyle('fond11', this)">✨ Sky Horizon</button>
+        <button class="tab-btn" onclick="changerStyle('green', this)">✨ Green Nature</button>
 
         <div class="cat-title">💍 Mariage & Événements</div>
-        <button class="tab-btn" onclick="changerStyle('mariage', this)">💍 Mariage Chic</button>
-        <button class="tab-btn" onclick="changerStyle('romance', this)">🌸 Romance Rose</button>
-        <button class="tab-btn" onclick="changerStyle('royal', this)">👑 Royal Gold</button>
+        <button class="tab-btn active" onclick="changerStyle('mariage', this)">💍 Mariage Chic</button>
+        <button class="tab-btn" onclick="changerStyle('rosez', this)">🌹 Éclat Floral</button>
+        <button class="tab-btn" onclick="changerStyle('coeur-violet', this)">💜 Passion Violette</button>
         
         <div id="cat-custom" class="cat-title" style="display:none;">Ajouts Récents</div>
     </div>
@@ -101,39 +100,28 @@
         <div id="zone-edition">
             <input type="text" id="in1" placeholder="Titre / Nom" oninput="maj()">
             <input type="text" id="in2" placeholder="Sous-titre" oninput="maj()">
-            <textarea id="in4" placeholder="Votre message ou détails..." oninput="maj()"></textarea>
+            <textarea id="in4" placeholder="Votre message..." oninput="maj()"></textarea>
 
             <label>Lien QR Code</label>
-            <input type="text" id="qr-link" placeholder="Lien (ex: https://wa.me/...)" oninput="maj()">
-
-            <label>Couleur du QR Code</label>
-            <select id="qr-color-select" onchange="maj()">
-                <option value="#000000">Noir Classique</option>
-                <option value="#25D366">Vert WhatsApp</option>
-                <option value="#b8860b">Or Premium</option>
-            </select>
+            <input type="text" id="qr-link" placeholder="https://..." oninput="maj()">
 
             <button class="btn-action bg-purple" style="width:100%; margin-bottom:10px;" onclick="toggleRotation()">🔄 PIVOTER CARTE</button>
 
-            <div class="align-group">
-                <button class="align-btn" onclick="setAlign('left', event)">Gauche</button>
-                <button class="align-btn active" onclick="setAlign('center', event)">Centre</button>
-                <button class="align-btn" onclick="setAlign('right', event)">Droite</button>
-            </div>
-
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                <div><label>Police</label>
+                <div>
+                    <label>Police</label>
                     <select id="font-select" onchange="maj()">
                         <option value="'Montserrat'">Moderne</option>
                         <option value="'Dancing Script'">Élégante</option>
                         <option value="'Pacifico'">Manuscrit</option>
                     </select>
                 </div>
-                <div><label>Couleur</label>
+                <div>
+                    <label>Couleur</label>
                     <select id="color-select" onchange="maj()">
-                        <option value="#1a1a1a">Noir Intense</option>
-                        <option value="#ffffff">Blanc Pur</option>
-                        <option value="#b8860b">Or Sombre</option>
+                        <option value="#1a1a1a">Noir</option>
+                        <option value="#ffffff">Blanc</option>
+                        <option value="#b8860b">Or</option>
                     </select>
                 </div>
             </div>
@@ -150,14 +138,14 @@
         </div>
 
         <div class="preview-area">
-            <div id="doc-final"></div>
+            <div id="doc-final" class="style-mariage"></div>
         </div>
 
         <div class="admin-panel">
-            <h4 style="margin:0 0 10px 0; text-align:center;">🛠️ Ajouter Modèle Perso</h4>
-            <input type="text" id="admin-name" placeholder="Nom du modèle">
-            <label class="file-label" style="background:#00b894;">📸 Choisir Image Galerie<input type="file" id="admin-file" accept="image/*" style="display:none"></label>
-            <button onclick="sauvegarderNouveauModele()" style="width:100%; padding:10px; margin-top:10px; border:none; border-radius:8px; cursor:pointer; font-weight:bold; background:white; color:black;">💾 Enregistrer dans le Menu</button>
+            <h4>🛠️ Ajouter Modèle Perso</h4>
+            <input type="text" id="admin-name" placeholder="Nom">
+            <label class="file-label">📸 Choisir Image<input type="file" id="admin-file" accept="image/*" style="display:none"></label>
+            <button onclick="sauvegarderNouveauModele()" style="width:100%; padding:10px; margin-top:10px;">💾 Enregistrer</button>
         </div>
     </div>
 
@@ -167,36 +155,22 @@
     let textAlign = "center";
     let isPaid = false;
     let modeImpression = false;
-    let modeCoupe = false;
     let mesModeles = JSON.parse(localStorage.getItem('studio_mega_v6')) || {};
 
-    function toggleRotation() {
-        document.getElementById('doc-final').classList.toggle('landscape');
-        maj();
-    }
-
-    function setAlign(align, e) {
-        textAlign = align;
-        document.querySelectorAll('.align-btn').forEach(btn => btn.classList.remove('active'));
-        e.target.classList.add('active');
-        maj();
-    }
-
+    // RÉPARATION : Cette fonction gère maintenant correctement vos images GitHub
     function changerStyle(type, btn) {
+        const doc = document.getElementById('doc-final');
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
         if(btn) btn.classList.add('active');
 
+        // URL de base de vos images sur GitHub
         const githubPath = "https://sandy2378.github.io/studio-pro/images/";
 
-        // Gestion des fonds GitHub
-        if(type.startsWith('fond')) {
-            currentBg = githubPath + type + ".jpg";
-        } else if(type === 'green' || type === 'mariage' || type === 'romance' || type === 'royal') {
-            currentBg = githubPath + type + ".jpg";
-        } else if(mesModeles[type]) {
-            currentBg = mesModeles[type].img; // Pour les modèles ajoutés manuellement
+        if (mesModeles[type]) {
+            currentBg = mesModeles[type].img; // Modèle perso
         } else {
-            currentBg = "";
+            // Modèles officiels (ajoute .jpg automatiquement)
+            currentBg = githubPath + type + ".jpg";
         }
         maj();
     }
@@ -205,11 +179,9 @@
         const doc = document.getElementById('doc-final');
         let color = document.getElementById('color-select').value;
         let font = document.getElementById('font-select').value;
-        let fSize = document.getElementById('font-size') ? document.getElementById('font-size').value : 32;
         let posY = document.getElementById('pos-y').value;
-        let qrLink = document.getElementById('qr-link').value;
 
-        doc.style.backgroundImage = currentBg ? `url(${currentBg})` : "none";
+        doc.style.backgroundImage = currentBg ? `url('${currentBg}')` : "none";
         doc.style.fontFamily = font;
         doc.style.color = color;
         doc.style.paddingTop = posY + "px";
@@ -218,61 +190,78 @@
         doc.innerHTML = `
             ${(!isPaid) ? '<div class="watermark">PREVIEW</div>' : ''}
             <div class="content-box">
-                <h2 style="margin:5px; font-size:${fSize}px;">${document.getElementById('in1').value || 'NOM / TITRE'}</h2>
-                <h3 style="margin:5px; font-size:${fSize*0.6}px;">${document.getElementById('in2').value || 'Sous-titre'}</h3>
-                <p style="font-size:14px;">${document.getElementById('in4').value || ''}</p>
-                <div style="margin-top:15px; display:flex; justify-content:${textAlign=='center'?'center':(textAlign=='right'?'flex-end':'flex-start')}">
-                    <div id="qrcode"></div>
-                </div>
+                <h2 style="margin:5px; font-size:32px;">${document.getElementById('in1').value || 'NOM'}</h2>
+                <h3 style="margin:5px; font-size:18px;">${document.getElementById('in2').value || 'Sous-titre'}</h3>
+                <p style="font-size:14px; margin-top:10px;">${document.getElementById('in4').value || ''}</p>
+                <div id="qrcode" style="display:flex; justify-content:center; margin-top:10px;"></div>
             </div>`;
-
+            
+        let qrLink = document.getElementById('qr-link').value;
         if (qrLink) {
-            new QRCode(document.getElementById("qrcode"), { text: qrLink, width: 70, height: 70 });
+            new QRCode(document.getElementById("qrcode"), { text: qrLink, width: 60, height: 60 });
         }
     }
 
-    function activerAdmin() {
-        let code = prompt("Code ADMIN :");
-        if(code === "ADMIN123") {
-            document.body.classList.add('admin-mode');
-            alert("Mode édition activé.");
-        }
-    }
-
-    function payer() {
-        alert("Virement de 10 DT vers RIM AYARI\nIBAN: TN59 12 301 00 0013306217243");
-        window.open("https://wa.me/21646248269?text=Paiement_Studio_Pro", "_blank");
-        setTimeout(() => verifierCode(), 2000);
-    }
-
-    function verifierCode() {
-        const code = prompt("Entrez votre code de déblocage :");
-        if(code === "VIP2026" || code === "PAID_OK") {
-            isPaid = true;
-            document.getElementById('btn-pdf').disabled = false;
-            document.getElementById('btn-pdf').style.opacity = "1";
-            maj();
-        }
-    }
+    function toggleRotation() { document.getElementById('doc-final').classList.toggle('landscape'); maj(); }
+    function activerAdmin() { if(++clickCount >= 5) { document.body.classList.add('admin-mode'); alert("Mode Admin"); } }
+    let clickCount = 0;
 
     async function telechargerImage() {
-        const canvas = await html2canvas(document.getElementById('doc-final'), {useCORS: true});
+        const canvas = await html2canvas(document.getElementById('doc-final'), { scale: 3, useCORS: true });
         const link = document.createElement('a');
-        link.download = 'carte.png';
+        link.download = 'studio_pro.png';
         link.href = canvas.toDataURL();
         link.click();
     }
 
-    async function genererPDF() {
-        const canvas = await html2canvas(document.getElementById('doc-final'), {useCORS: true});
-        const { jsPDF } = window.jspdf;
-        const pdf = new jsPDF('p', 'px', [340, 480]);
-        pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, 340, 480);
-        pdf.save("studio_pro.pdf");
+    function payer() {
+        alert("Paiement : 10 DT vers l'IBAN RIM AYARI");
+        window.open("https://wa.me/21646248269?text=Paiement", "_blank");
+        let code = prompt("Entrez le code reçu :");
+        if(code === "VIP2026") { isPaid = true; document.getElementById('btn-pdf').disabled = false; document.getElementById('btn-pdf').style.opacity = "1"; maj(); }
     }
 
-    window.onload = () => { maj(); };
+    async function genererPDF() {
+        const el = document.getElementById('doc-final');
+        const canvas = await html2canvas(el, { scale: 2, useCORS: true });
+        const { jsPDF } = window.jspdf;
+        const pdf = new jsPDF(el.offsetWidth > el.offsetHeight ? 'l' : 'p', 'px', [el.offsetWidth, el.offsetHeight]);
+        pdf.addImage(canvas.toDataURL('image/jpeg'), 'JPEG', 0, 0, el.offsetWidth, el.offsetHeight);
+        pdf.save("document.pdf");
+    }
+
+    function sauvegarderNouveauModele() {
+        const name = document.getElementById('admin-name').value;
+        const file = document.getElementById('admin-file').files[0];
+        if(!name || !file) return;
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const id = "custom-" + Date.now();
+            mesModeles[id] = { name: name, img: e.target.result };
+            localStorage.setItem('studio_mega_v6', JSON.stringify(mesModeles));
+            actualiserMenu();
+        };
+        reader.readAsDataURL(file);
+    }
+
+    function actualiserMenu() {
+        const menu = document.getElementById('menu-container');
+        Object.keys(mesModeles).forEach(id => {
+            if(!document.getElementById('btn-'+id)) {
+                const btn = document.createElement('button');
+                btn.id = 'btn-'+id;
+                btn.className = "tab-btn";
+                btn.onclick = () => changerStyle(id, btn);
+                btn.innerText = "⭐ " + mesModeles[id].name;
+                menu.appendChild(btn);
+            }
+        });
+    }
+
+    window.onload = () => { actualiserMenu(); maj(); };
     </script>
 </body>
 </html>
+
+
 
