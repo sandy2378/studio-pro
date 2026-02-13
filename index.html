@@ -8,31 +8,30 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-    
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Playfair+Display:wght@700&family=Dancing+Script:wght@700&family=Pacifico&display=swap" rel="stylesheet">
 
     <style>
-        :root { --primary: #2563eb; --secondary: #2d3436; }
-        body { font-family: 'Montserrat', sans-serif; background: #f0f2f5; margin: 0; padding: 10px; display: flex; flex-direction: column; align-items: center; }
+        body { font-family: 'Montserrat', sans-serif; background: #f0f2f5; display: flex; flex-direction: column; align-items: center; padding: 10px; }
         
-        .menu-modeles { display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; width: 100%; max-width: 500px; max-height: 150px; overflow-y: auto; background: white; padding: 10px; border-radius: 10px; margin-bottom: 15px; }
+        /* Grille des modèles */
+        .menu-modeles { display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; width: 100%; max-width: 500px; max-height: 150px; overflow-y: auto; background: white; padding: 10px; border-radius: 10px; margin-bottom: 15px; border: 1px solid #ddd; }
         .tab-btn { padding: 5px; font-size: 10px; border: 1px solid #ddd; border-radius: 4px; cursor: pointer; background: #f8f9fa; }
-        .tab-btn.active { background: var(--primary); color: white; }
+        .tab-btn.active { background: #2563eb; color: white; }
 
         .editor-container { background: white; width: 100%; max-width: 450px; padding: 20px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
         input, textarea, select { width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 8px; }
         
+        /* Zone de prévisualisation */
         .preview-area { width: 100%; margin: 20px 0; display: flex; justify-content: center; position: relative; }
-        #doc-final { width: 340px; height: 480px; background-size: cover; background-position: center; position: relative; overflow: hidden; display: flex; flex-direction: column; transition: 0.3s; box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
+        #doc-final { width: 340px; height: 480px; background-size: cover; background-position: center; position: relative; overflow: hidden; display: flex; flex-direction: column; box-shadow: 0 10px 25px rgba(0,0,0,0.2); background-color: white; }
         #doc-final.landscape { width: 480px !important; height: 300px !important; }
         
         .content-box { padding: 20px; z-index: 2; width: 100%; }
         .watermark { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-45deg); font-size: 40px; color: rgba(0,0,0,0.1); font-weight: bold; pointer-events: none; }
 
+        /* Boutons identiques à tes captures */
         .btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
         .btn { padding: 12px; border: none; border-radius: 8px; color: white; font-weight: bold; cursor: pointer; text-transform: uppercase; font-size: 11px; display: flex; align-items: center; justify-content: center; gap: 5px; }
-        
-        /* Couleurs des boutons selon tes captures */
         .bg-blue { background: #3498db; }
         .bg-dark { background: #2c3e50; }
         .bg-green { background: #27ae60; }
@@ -46,7 +45,7 @@
 </head>
 <body>
 
-    <h2 style="color: var(--primary);">STUDIO PRO EXPERT</h2>
+    <h2 style="color: #2563eb;">STUDIO PRO EXPERT</h2>
 
     <div class="menu-modeles" id="menu-v"></div>
 
@@ -55,20 +54,30 @@
         <input type="text" id="stitre" placeholder="Sous-titre / Profession" oninput="maj()">
         <textarea id="infos" placeholder="Adresse, Tel, Email..." oninput="maj()"></textarea>
 
-        <label style="font-size: 12px; font-weight: bold;">QR Code (Lien WhatsApp/FB/Web)</label>
+        <label style="font-size: 12px; font-weight: bold;">QR Code (Lien WhatsApp, FB, Web...)</label>
         <input type="text" id="qr-data" placeholder="https://wa.me/..." oninput="maj()">
         <select id="qr-color" onchange="maj()">
-            <option value="#000000">QR Noir Classique</option>
-            <option value="#25D366">QR Vert WhatsApp</option>
-            <option value="#1877F2">QR Bleu Facebook</option>
-            <option value="#D4AF37">QR Or Premium</option>
+            <option value="#000000">Noir Classique</option>
+            <option value="#25D366">Vert WhatsApp</option>
+            <option value="#1877F2">Bleu Facebook</option>
+            <option value="#D4AF37">Or Premium</option>
         </select>
 
         <button class="btn bg-blue" style="width:100%; margin-bottom:10px;" onclick="pivoter()">🔄 PIVOTER (PORTRAIT/PAYSAGE)</button>
 
         <div class="btn-grid">
-            <select id="f-family" onchange="maj()"><option value="'Montserrat'">Moderne</option><option value="'Playfair Display'">Chic</option><option value="'Dancing Script'">Élégante</option><option value="'Pacifico'">Manuscrit</option></select>
-            <select id="f-color" onchange="maj()"><option value="#000000">Noir Intense</option><option value="#ffffff">Blanc Pur</option><option value="#D4AF37">Or Sombre</option><option value="#00008B">Bleu Royal</option></select>
+            <select id="f-family" onchange="maj()">
+                <option value="'Montserrat'">Moderne</option>
+                <option value="'Playfair Display'">Chic Serif</option>
+                <option value="'Dancing Script'">Élégante</option>
+                <option value="'Pacifico'">Manuscrit</option>
+            </select>
+            <select id="f-color" onchange="maj()">
+                <option value="#000000">Noir Intense</option>
+                <option value="#ffffff">Blanc Pur</option>
+                <option value="#D4AF37">Or Sombre</option>
+                <option value="#00008B">Bleu Royal</option>
+            </select>
         </div>
 
         <label style="font-size: 11px;">Ajuster Hauteur Texte</label>
@@ -97,30 +106,34 @@
     </div>
 
     <div class="admin-section">
-        <h3>🛠️ Ajouter un modèle au Cloud</h3>
-        <input type="text" id="adm-name" placeholder="Nom du modèle">
+        <h3>🛠️ Ajouter au Cloud</h3>
+        <input type="text" placeholder="Nom du modèle">
         <button class="btn bg-green" style="width:100%;">Choisir Image Galerie</button>
         <button class="btn bg-grey" style="width:100%; margin-top:5px;">Enregistrer dans le Menu</button>
         
         <h3>🛡️ Sauvegarde & Secours</h3>
-        <button class="btn bg-green" style="width:100%;">Télécharger (.txt)</button>
+        <button class="btn bg-green" style="width:100%;" onclick="saveData()">Télécharger (.txt)</button>
         <button class="btn bg-orange" style="width:100%; margin-top:5px;">Restaurer Sauvegarde</button>
     </div>
 
 <script>
-    const GITHUB_URL = "https://raw.githubusercontent.com/sandy2378/studio-pro/main/images/";
-    let currentBg = GITHUB_URL + "visite1.jpg";
+    // Utilisation du dossier EXACT de ton GitHub
+    const BASE_URL = "https://raw.githubusercontent.com/sandy2378/studio-pro/main/images/images%20studio%20pro/";
+    let currentBg = BASE_URL + "visite1.jpg";
     let logoData = null;
     let isEco = false;
-    let isPaid = false;
 
-    // Génération des 64 boutons
+    // Création des boutons de V1 à V64
     const menuV = document.getElementById('menu-v');
     for(let i=1; i<=64; i++){
         let b = document.createElement('button');
         b.className = 'tab-btn';
         b.innerText = 'V'+i;
-        b.onclick = () => { currentBg = GITHUB_URL + "visite"+i+".jpg"; isEco=false; maj(); };
+        b.onclick = () => { 
+            currentBg = BASE_URL + "visite"+i+".jpg"; 
+            isEco=false; 
+            maj(); 
+        };
         menuV.appendChild(b);
     }
 
@@ -129,13 +142,13 @@
         const content = document.getElementById('content');
         
         doc.style.backgroundImage = isEco ? "none" : `url('${currentBg}')`;
-        doc.style.backgroundColor = isEco ? "#ffffff" : "transparent";
         doc.style.color = document.getElementById('f-color').value;
         doc.style.fontFamily = document.getElementById('f-family').value;
         doc.style.paddingTop = document.getElementById('pos-y').value + "px";
+        doc.style.textAlign = "center";
 
         content.innerHTML = `
-            ${logoData ? `<img src="${logoData}" style="width:70px; display:block; margin: 0 auto 10px;">` : ''}
+            ${logoData ? `<img src="${logoData}" style="width:60px; margin-bottom:10px;">` : ''}
             <h1 style="margin:0; font-size:24px;">${document.getElementById('titre').value || 'VOTRE NOM'}</h1>
             <p style="margin:5px 0; font-size:16px;">${document.getElementById('stitre').value || ''}</p>
             <div style="font-size:12px; margin-top:10px; white-space:pre-wrap;">${document.getElementById('infos').value || ''}</div>
@@ -155,14 +168,13 @@
     function toggleEco() { isEco = !isEco; maj(); }
     function loadLogo(e) { const r = new FileReader(); r.onload = (f) => { logoData = f.target.result; maj(); }; r.readAsDataURL(e.target.files[0]); }
     function loadBg(e) { const r = new FileReader(); r.onload = (f) => { currentBg = f.target.result; isEco=false; maj(); }; r.readAsDataURL(e.target.files[0]); }
-
+    
     function payer() {
         if(prompt("Code d'activation :") === "ADMIN2026") {
-            isPaid = true;
             document.getElementById('wm').style.display = "none";
             document.getElementById('btn-pdf').disabled = false;
             document.getElementById('btn-pdf').className = "btn bg-orange";
-            alert("Version Pro Activée !");
+            alert("Paiement validé !");
         }
     }
 
