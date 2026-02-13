@@ -3,365 +3,153 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Studio Pro - Version Expert Intégrale</title>
-   
+    <title>Studio Pro - 64 Modèles</title>
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-   
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Playfair+Display:wght@700&family=Montserrat:wght@400;700&family=Pacifico&family=Oswald:wght@700&display=swap" rel="stylesheet">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
 
     <style>
-        * { box-sizing: border-box; }
-        body { font-family: 'Montserrat', sans-serif; background: #f0f2f5; margin: 0; padding: 10px; display: flex; flex-direction: column; align-items: center; }
-
-        .menu-choix { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 15px; width: 100%; max-width: 550px; }
-        .cat-title { grid-column: span 3; font-size: 11px; font-weight: bold; color: #2563eb; margin-top: 15px; text-transform: uppercase; border-bottom: 2px solid #2563eb; padding-bottom: 3px; }
-       
-        .tab-btn { width: 100%; padding: 10px 5px; border: none; border-radius: 8px; background: white; font-size: 10px; font-weight: bold; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.1); transition: 0.2s; min-height: 45px; }
-        .tab-btn:hover { background: #eef2ff; }
-        .tab-btn.active { background: #2563eb; color: white; }
-       
-        .container { display: flex; flex-direction: column; width: 100%; max-width: 450px; gap: 10px; }
-        #zone-edition { background: white; padding: 15px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-       
-        input, textarea, select { width: 100%; padding: 10px; margin-bottom: 8px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; }
-        label { font-size: 11px; font-weight: bold; color: #444; display: block; margin-top: 5px; }
-
-        .preview-area { width: 100%; margin: 20px 0; display: flex; justify-content: center; overflow-x: auto; padding-bottom: 20px; }
-
-        #doc-final {
-            width: 340px; height: 480px;
-            display: flex; flex-direction: column;
-            background-size: cover; background-position: center; background-repeat: no-repeat;
-            position: relative; border: 1px solid #eee; overflow: hidden;
-            background-color: #ffffff; transition: all 0.3s ease;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        * { box-sizing: border-box; font-family: 'Montserrat', sans-serif; }
+        body { background: #f4f7f6; margin: 0; padding: 10px; display: flex; flex-direction: column; align-items: center; }
+        
+        /* Grille des 64 boutons */
+        .menu-choix { 
+            display: grid; 
+            grid-template-columns: repeat(4, 1fr); 
+            gap: 5px; 
+            margin-bottom: 20px; 
+            width: 100%; 
+            max-width: 500px; 
+            max-height: 200px; 
+            overflow-y: auto; 
+            background: white;
+            padding: 10px;
+            border-radius: 10px;
+            border: 1px solid #ddd;
         }
+        
+        .tab-btn { 
+            padding: 8px 2px; 
+            border: 1px solid #eee; 
+            border-radius: 5px; 
+            background: #f8f9fa; 
+            font-size: 10px; 
+            cursor: pointer; 
+        }
+        .tab-btn.active { background: #2563eb; color: white; border-color: #2563eb; }
 
+        .container { width: 100%; max-width: 450px; background: white; padding: 15px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        input, textarea { width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 8px; }
+        
+        .preview-area { width: 100%; margin: 20px 0; display: flex; justify-content: center; }
+        
+        #doc-final { 
+            width: 340px; height: 480px; 
+            background-size: cover; 
+            background-position: center; 
+            position: relative; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center;
+            transition: 0.3s;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
         #doc-final.landscape { width: 480px !important; height: 300px !important; }
 
-        .watermark {
-            position: absolute; top: 50%; left: 50%;
-            transform: translate(-50%, -50%) rotate(-45deg);
-            font-size: 40px; color: rgba(0,0,0,0.1);
-            font-weight: bold; pointer-events: none;
-            z-index: 10; border: 4px solid rgba(0,0,0,0.1); padding: 10px; white-space: nowrap;
-        }
-
-        .content-box { width: 100%; padding: 0 20px; z-index: 2; position: relative; }
-
-        .btn-group { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
-        .btn-action { padding: 12px; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; color: white; font-size: 11px; text-transform: uppercase; }
-
-        .admin-mode .delete-badge { display: flex; }
-        .delete-badge { position: absolute; top: -5px; right: -5px; background: #e74c3c; color: white; border-radius: 50%; width: 20px; height: 20px; display: none; align-items: center; justify-content: center; font-size: 12px; cursor: pointer; border: 2px solid white; }
-
-        .bg-blue { background: #2563eb; } .bg-green { background: #27ae60; } .bg-orange { background: #f39c12; } .bg-red { background: #e74c3c; } .bg-purple { background: #6c5ce7; }
-
-        .align-group { display: flex; gap: 5px; margin-bottom: 10px; }
-        .align-btn { flex: 1; padding: 8px; border: 1px solid #ddd; border-radius: 5px; background: white; cursor: pointer; }
-        .align-btn.active { background: #2563eb; color: white; border-color: #2563eb; }
-
-        .admin-panel, .security-panel { background: #2d3436; padding: 15px; border-radius: 15px; color: white; margin-top: 20px; width: 100%; max-width: 450px; }
-        .file-label { display: block; background: #6c5ce7; color: white; padding: 10px; border-radius: 8px; text-align: center; cursor: pointer; font-size: 11px; margin-top: 5px; }
-        .unlocked { border: 5px solid #27ae60 !important; }
+        .content { position: relative; z-index: 2; text-align: center; width: 100%; padding: 20px; }
+        .btn-action { width: 100%; padding: 15px; border: none; border-radius: 10px; color: white; font-weight: bold; cursor: pointer; margin-top: 10px; }
+        .bg-blue { background: #2563eb; }
+        .bg-green { background: #27ae60; }
     </style>
 </head>
 <body>
 
-    <h2 onclick="activerAdmin()" style="color:#2563eb; margin: 15px 0; cursor:pointer; text-align: center;">Studio Premium Pro 2026</h2>
+    <h2 style="color: #2563eb;">Studio Pro : 64 Modèles</h2>
 
+    <p style="font-size: 12px; color: #666;">Sélectionnez un modèle (1 à 64) :</p>
     <div class="menu-choix" id="menu-container">
-       
-        <div class="cat-title">📇 Fonds Classiques</div>
-        <button class="tab-btn" onclick="changerStyle('fond1', this)">Fond 1</button>
-        <button class="tab-btn" onclick="changerStyle('fond2', this)">Fond 2</button>
-        <button class="tab-btn" onclick="changerStyle('fond3', this)">Fond 3</button>
-        <button class="tab-btn" onclick="changerStyle('fond4', this)">Fond 4</button>
-        <button class="tab-btn" onclick="changerStyle('fond7', this)">Fond 7</button>
-        <button class="tab-btn" onclick="changerStyle('fond10', this)">Fond 10</button>
-
-        <div class="cat-title">💼 Cartes de Visite</div>
-        <button class="tab-btn" onclick="changerStyle('visite1', this)">Visite 1</button>
-        <button class="tab-btn" onclick="changerStyle('visite2', this)">Visite 2</button>
-        <button class="tab-btn" onclick="changerStyle('visite5', this)">Hexagone</button>
-        <button class="tab-btn" onclick="changerStyle('visite10', this)">Visite 10</button>
-        <button class="tab-btn" onclick="changerStyle('visite16', this)">Visite 16</button>
-        <button class="tab-btn" onclick="changerStyle('visite21', this)">Visite 21</button>
-
-        <div class="cat-title">✨ Événements & Luxe</div>
-        <button class="tab-btn active" onclick="changerStyle('Mariage', this)">💍 Mariage</button>
-        <button class="tab-btn" onclick="changerStyle('Passion', this)">💜 Passion</button>
-        <button class="tab-btn" onclick="changerStyle('Eclat', this)">🌸 Éclat</button>
-        <button class="tab-btn" onclick="changerStyle('Royal', this)">👑 Royal</button>
-        <button class="tab-btn" onclick="changerStyle('Gala', this)">🌌 Gala</button>
-        <button class="tab-btn" onclick="changerStyle('Fete', this)">🎂 Fête</button>
-
-        <div id="cat-custom" class="cat-title" style="display:none;">Mes Modèles Perso</div>
-    </div>
+        </div>
 
     <div class="container">
-        <div id="zone-edition">
-            <label>Contenu du Texte</label>
-            <input type="text" id="in1" placeholder="NOM / TITRE" oninput="maj()">
-            <input type="text" id="in2" placeholder="Sous-titre / Profession" oninput="maj()">
-            <textarea id="in4" placeholder="Adresse, Tel, Email..." oninput="maj()"></textarea>
-
-            <label>QR Code (Lien WhatsApp ou Web)</label>
-            <input type="text" id="qr-link" placeholder="https://..." oninput="maj()">
-            <select id="qr-color-select" onchange="maj()">
-                <option value="#000000">QR Noir Classique</option>
-                <option value="#25D366">Vert WhatsApp</option>
-                <option value="#b8860b">Or Premium</option>
-            </select>
-
-            <button class="btn-action bg-purple" style="width:100%; margin:10px 0;" onclick="toggleRotation()">🔄 PIVOTER (Portrait/Paysage)</button>
-
-            <label>Alignement du Texte</label>
-            <div class="align-group">
-                <button class="align-btn" onclick="setAlign('left', event)">Gauche</button>
-                <button class="align-btn active" onclick="setAlign('center', event)">Centre</button>
-                <button class="align-btn" onclick="setAlign('right', event)">Droite</button>
-            </div>
-
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                <div>
-                    <label>Style Police</label>
-                    <select id="font-select" onchange="maj()">
-                        <option value="'Montserrat'">Moderne</option>
-                        <option value="'Playfair Display'">Chic Serif</option>
-                        <option value="'Dancing Script'">Élégante</option>
-                        <option value="'Pacifico'">Manuscrit</option>
-                        <option value="'Oswald'">Impact</option>
-                    </select>
-                </div>
-                <div>
-                    <label>Couleur Texte</label>
-                    <select id="color-select" onchange="maj()">
-                        <option value="#1a1a1a">Noir Intense</option>
-                        <option value="#ffffff">Blanc Pur</option>
-                        <option value="#b8860b">Or Sombre</option>
-                        <option value="#d63031">Rouge</option>
-                        <option value="#0984e3">Bleu Royal</option>
-                    </select>
-                </div>
-            </div>
-
-            <label>Ajuster Hauteur Texte</label>
-            <input type="range" id="pos-y" min="0" max="400" value="150" oninput="maj()">
-
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                <div><label>Taille Texte</label><input type="range" id="font-size" min="10" max="80" value="30" oninput="maj()"></div>
-                <div><label>Taille Logo</label><input type="range" id="logo-size" min="20" max="250" value="80" oninput="maj()"></div>
-            </div>
-
-            <div style="display: flex; gap: 5px; margin-top: 10px;">
-                <label class="file-label" style="flex:1; background:#e67e22;">🚀 Logo Perso<input type="file" accept="image/*" style="display:none" onchange="loadLogo(event)"></label>
-                <label class="file-label" style="flex:1;">🖼️ Fond Perso<input type="file" accept="image/*" style="display:none" onchange="loadBackground(event)"></label>
-            </div>
-
-            <button class="btn-action" style="background:#34495e; width:100%; margin:10px 0;" onclick="toggleModeImpression(event)">🖨️ MODE ÉCO (FOND BLANC)</button>
-
-            <div class="btn-group">
-                <button class="btn-action bg-blue" onclick="telechargerImage()">📥 IMAGE PNG</button>
-                <button class="btn-action bg-green" onclick="payer()">💳 ACTIVER PDF</button>
-                <button id="btn-pdf" class="btn-action bg-orange" onclick="genererPDF()" disabled style="opacity:0.5;">📄 PDF HAUTE QUALITÉ</button>
-                <button class="btn-action bg-red" onclick="location.reload()">🔄 RESET</button>
-            </div>
-        </div>
-
+        <input type="text" id="titre" placeholder="NOM COMPLET" oninput="maj()">
+        <input type="text" id="sous-titre" placeholder="Profession / Activité" oninput="maj()">
+        <textarea id="details" placeholder="Contact, Adresse, etc." oninput="maj()"></textarea>
+        
+        <button class="btn-action bg-blue" onclick="toggleRotation()">🔄 PIVOTER (Portrait/Paysage)</button>
+        
         <div class="preview-area">
-            <div id="doc-final"></div>
+            <div id="doc-final">
+                <div class="content" id="rendu"></div>
+            </div>
         </div>
 
-        <div class="admin-panel">
-            <h4>🛠️ Ajouter un nouveau modèle au Cloud</h4>
-            <input type="text" id="admin-name" placeholder="Nom du modèle">
-            <label class="file-label" style="background:#00b894;">📸 Choisir Image JPG<input type="file" id="admin-file" accept="image/*" style="display:none"></label>
-            <button onclick="sauvegarderNouveauModele()" style="width:100%; padding:12px; margin-top:10px; border:none; border-radius:8px; cursor:pointer; font-weight:bold; background:white; color:#2d3436;">💾 Enregistrer dans le menu</button>
-        </div>
-
-        <div class="security-panel">
-            <h4>🛡️ Sauvegarde des données</h4>
-            <button onclick="sauvegarderVersFichier()" style="width:100%; padding:10px; margin-bottom:10px; border:none; border-radius:8px; background:#27ae60; color:white; font-weight:bold;">📥 Télécharger Backup (.txt)</button>
-            <label class="file-label" style="background:#e67e22; font-weight:bold;">
-                📤 Restaurer Backup
-                <input type="file" style="display:none" onchange="restaurerDepuisFichier(event)">
-            </label>
-        </div>
+        <button class="btn-action bg-green" onclick="telecharger()">📥 TÉLÉCHARGER L'IMAGE</button>
     </div>
 
 <script>
-    let currentBg = "https://sandy2378.github.io/studio-pro/images/Mariage.jpg";
-    let currentLogo = "";
-    let textAlign = "center";
-    let isPaid = false;
-    let modeImpression = false;
-    let mesModeles = JSON.parse(localStorage.getItem('studio_mega_v6')) || {};
+    // 1. CONFIGURATION GITHUB
+    // Remplacez 'sandy2378' par votre pseudo si nécessaire
+    const GITHUB_USERNAME = "sandy2378";
+    const REPO_NAME = "studio-pro";
+    const BASE_URL = `https://raw.githubusercontent.com/${GITHUB_USERNAME}/${REPO_NAME}/main/images/`;
 
-    function maj() {
-        const doc = document.getElementById('doc-final');
-        let color = document.getElementById('color-select').value;
-        let font = document.getElementById('font-select').value;
-        let fSize = document.getElementById('font-size').value;
-        let lSize = document.getElementById('logo-size').value;
-        let posY = document.getElementById('pos-y').value;
-        let qrLink = document.getElementById('qr-link').value;
+    let currentBg = BASE_URL + "visite1.jpg";
+    let isLandscape = false;
 
-        // Gestion du fond
-        if (modeImpression) {
-            color = "#000000"; doc.style.backgroundImage = "none"; doc.style.backgroundColor = "#ffffff";
-        } else {
-            doc.style.backgroundImage = `url('${currentBg}')`;
-            doc.style.backgroundColor = "transparent";
-        }
-
-        doc.style.fontFamily = font;
-        doc.style.color = color;
-        doc.style.paddingTop = posY + "px";
-        doc.style.textAlign = textAlign;
-
-        doc.innerHTML = `
-            ${(!isPaid && !modeImpression) ? '<div class="watermark">STUDIO PREVIEW</div>' : ''}
-            <div class="content-box">
-                ${currentLogo ? `<img src="${currentLogo}" style="width:${lSize}px; margin-bottom:15px;">` : ''}
-                <h2 style="margin:5px; font-size:${fSize}px; line-height:1.1; font-weight:700;">${document.getElementById('in1').value || 'VOTRE NOM'}</h2>
-                <h3 style="margin:5px; font-size:${fSize*0.6}px; font-weight:normal;">${document.getElementById('in2').value || 'Votre Profession'}</h3>
-                <p style="font-size:${fSize*0.45}px; margin-top:15px; white-space: pre-wrap; line-height:1.4;">${document.getElementById('in4').value || ''}</p>
-                <div style="margin-top:20px; display:flex; justify-content:${textAlign === 'center' ? 'center' : (textAlign === 'right' ? 'flex-end' : 'flex-start')}">
-                    <div id="qrcode"></div>
-                </div>
-            </div>`;
-
-        if (qrLink && qrLink.trim() !== "") {
-            document.getElementById("qrcode").innerHTML = "";
-            new QRCode(document.getElementById("qrcode"), {
-                text: qrLink, width: 80, height: 80,
-                colorDark : document.getElementById('qr-color-select').value,
-                colorLight : "rgba(255,255,255,0)"
-            });
-        }
+    // 2. GÉNÉRATION DES 64 BOUTONS
+    const menu = document.getElementById('menu-container');
+    for (let i = 1; i <= 64; i++) {
+        let btn = document.createElement('button');
+        btn.className = 'tab-btn';
+        if(i === 1) btn.classList.add('active');
+        btn.innerText = 'Modèle ' + i;
+        btn.onclick = function() { 
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            currentBg = BASE_URL + "visite" + i + ".jpg"; 
+            maj();
+        };
+        menu.appendChild(btn);
     }
 
-    function changerStyle(type, btn) {
-        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-        if(btn) btn.classList.add('active');
+    // 3. MISE À JOUR DU RENDU
+    function maj() {
+        const doc = document.getElementById('doc-final');
+        const rendu = document.getElementById('rendu');
+        
+        doc.style.backgroundImage = `url('${currentBg}')`;
+        doc.style.paddingTop = isLandscape ? "60px" : "140px";
 
-        if (mesModeles[type]) {
-            currentBg = mesModeles[type].img;
-        } else {
-            // On utilise le chemin GitHub (Attention à la casse des fichiers)
-            currentBg = "https://sandy2378.github.io/studio-pro/images/" + type + ".jpg";
-        }
+        rendu.innerHTML = `
+            <h2 style="margin:0; font-size:28px; color:inherit;">${document.getElementById('titre').value || 'VOTRE NOM'}</h2>
+            <p style="margin:5px 0; font-size:18px;">${document.getElementById('sous-titre').value || 'Votre Profession'}</p>
+            <p style="margin-top:20px; font-size:14px; white-space:pre-wrap;">${document.getElementById('details').value || ''}</p>
+        `;
+    }
+
+    function toggleRotation() {
+        isLandscape = !isLandscape;
+        document.getElementById('doc-final').classList.toggle('landscape');
         maj();
     }
 
-    function sauvegarderNouveauModele() {
-        const name = document.getElementById('admin-name').value;
-        const file = document.getElementById('admin-file').files[0];
-        if(!name || !file) return alert("Veuillez donner un nom et choisir une image !");
-       
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            const id = "custom-" + Date.now();
-            mesModeles[id] = { name: name, img: e.target.result };
-            localStorage.setItem('studio_mega_v6', JSON.stringify(mesModeles));
-            actualiserMenu();
-            alert("✅ Nouveau modèle ajouté au menu !");
-        };
-        reader.readAsDataURL(file);
+    async function telecharger() {
+        const node = document.getElementById('doc-final');
+        const canvas = await html2canvas(node, { useCORS: true, scale: 2 });
+        const link = document.createElement('a');
+        link.download = 'ma-carte.png';
+        link.href = canvas.toDataURL();
+        link.click();
     }
 
-    function actualiserMenu() {
-        const menu = document.getElementById('menu-container');
-        document.querySelectorAll('.btn-custom-container').forEach(el => el.remove());
-        const keys = Object.keys(mesModeles);
-        document.getElementById('cat-custom').style.display = keys.length > 0 ? "block" : "none";
-        keys.forEach(id => {
-            const div = document.createElement('div'); div.className = "btn-custom-container";
-            div.style.position = "relative";
-            div.innerHTML = `<button class="tab-btn" onclick="changerStyle('${id}', this)">⭐ ${mesModeles[id].name}</button>
-                             <div class="delete-badge" onclick="supprimerModele('${id}', event)">×</div>`;
-            menu.appendChild(div);
-        });
-    }
-
-    function supprimerModele(id, e) {
-        e.stopPropagation();
-        if(confirm("Supprimer ce modèle de votre liste ?")) {
-            delete mesModeles[id];
-            localStorage.setItem('studio_mega_v6', JSON.stringify(mesModeles));
-            actualiserMenu();
-        }
-    }
-
-    let clicks = 0;
-    function activerAdmin() { clicks++; if(clicks >= 5) { document.body.classList.add('admin-mode'); alert("MODE ADMIN ACTIVÉ : Vous pouvez maintenant supprimer des modèles."); } }
-
-    function toggleModeImpression(e) { modeImpression = !modeImpression; e.target.innerText = modeImpression ? "🖼️ REVENIR AU MODE COULEUR" : "🖨️ MODE ÉCO (FOND BLANC)"; maj(); }
-    function toggleRotation() { document.getElementById('doc-final').classList.toggle('landscape'); maj(); }
-    function setAlign(a, e) { textAlign = a; document.querySelectorAll('.align-btn').forEach(b => b.classList.remove('active')); e.target.classList.add('active'); maj(); }
-   
-    function loadLogo(e) { const r = new FileReader(); r.onload = (ev) => { currentLogo = ev.target.result; maj(); }; r.readAsDataURL(e.target.files[0]); }
-    function loadBackground(e) { const r = new FileReader(); r.onload = (ev) => { currentBg = ev.target.result; maj(); }; r.readAsDataURL(e.target.files[0]); }
-
-    function payer() {
-        window.open("https://wa.me/21646248269?text=Je%20souhaite%20activer%20le%20mode%20PDF%20PRO", "_blank");
-        setTimeout(() => {
-            let c = prompt("Entrez votre code d'activation reçu :");
-            if(["VIP2026", "PAID_OK", "ADMIN"].includes(c)) {
-                isPaid=true; document.getElementById('btn-pdf').disabled=false;
-                document.getElementById('btn-pdf').style.opacity="1";
-                document.getElementById('doc-final').classList.add('unlocked');
-                maj(); alert("✅ STUDIO DÉBLOQUÉ !");
-            }
-        }, 1000);
-    }
-
-    async function telechargerImage() {
-        const doc = document.getElementById('doc-final');
-        const canvas = await html2canvas(doc, { scale: 3, useCORS: true, backgroundColor: null });
-        const link = document.createElement('a'); link.download = 'ma_creation_studio.png';
-        link.href = canvas.toDataURL('image/png'); link.click();
-    }
-
-    async function genererPDF() {
-        const el = document.getElementById('doc-final');
-        const canvas = await html2canvas(el, { scale: 3, useCORS: true });
-        const imgData = canvas.toDataURL('image/png');
-        const { jsPDF } = window.jspdf;
-        const pdf = new jsPDF(el.offsetWidth > el.offsetHeight ? 'l' : 'p', 'px', [el.offsetWidth, el.offsetHeight]);
-        pdf.addImage(imgData, 'PNG', 0, 0, el.offsetWidth, el.offsetHeight);
-        pdf.save("impression_studio_pro.pdf");
-    }
-
-    function sauvegarderVersFichier() {
-        const blob = new Blob([JSON.stringify(mesModeles)], {type: 'text/plain'});
-        const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'backup_studio_pro.txt'; a.click();
-    }
-
-    function restaurerDepuisFichier(e) {
-        const r = new FileReader();
-        r.onload = (ev) => {
-            try {
-                mesModeles = JSON.parse(ev.target.result);
-                localStorage.setItem('studio_mega_v6', ev.target.result);
-                actualiserMenu(); maj(); alert("Restauré avec succès !");
-            } catch(e) { alert("Fichier invalide"); }
-        };
-        r.readAsText(e.target.files[0]);
-    }
-
-    window.onload = () => { actualiserMenu(); maj(); };
+    // Initialisation
+    window.onload = maj;
 </script>
 
 </body>
 </html>
-
-
-
-
 
 
 
