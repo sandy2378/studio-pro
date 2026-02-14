@@ -184,11 +184,15 @@
         document.getElementById('bloc-deblocage').style.display = 'none';
     }
 
-    function libererBoutonCode() {
-        // Cette fonction s'active UNIQUEMENT quand on clique sur le bouton WhatsApp
-        document.getElementById('bloc-deblocage').style.display = 'block'; 
-    }
+    
 
+function libererBoutonCode() {
+    // On affiche le bouton bleu
+    document.getElementById('bloc-deblocage').style.display = 'block';
+    
+    // On prévient l'utilisateur
+    alert("⚠️ ATTENTION : Le code de déblocage ne vous sera envoyé qu'APRÈS réception de votre preuve de paiement sur WhatsApp.");
+}
 
 
     
@@ -232,18 +236,26 @@
             });
         }
     }
+function debloquerAdmin() {
+    // On demande le code que TOI seul a donné sur WhatsApp
+    let saisie = prompt("Entrez le code de validation reçu par l'administrateur :");
+    
+    // Tu peux créer un code fixe difficile (ex: "PRO-99-OK") 
+    // ou garder ton système de date (VENT1402)
+    const d = new Date();
+    const codeSecret = "VENT" + String(d.getDate()).padStart(2, '0') + String(d.getMonth() + 1).padStart(2, '0');
 
-    function debloquerAdmin() {
-        const d = new Date();
-        const codeSecret = "VENT" + String(d.getDate()).padStart(2, '0') + String(d.getMonth() + 1).padStart(2, '0');
-        let saisie = prompt("Entrez le code secret :");
-        if (saisie === codeSecret) {
-            document.getElementById('btn-p').disabled = false;
-            document.getElementById('btn-p').style.opacity = "1";
-            alert("✅ Accès Pro débloqué !");
-            closePay();
-        } else { alert("❌ Code invalide."); }
+    if (saisie === codeSecret || saisie === "STUDIO2026") { 
+        document.getElementById('btn-p').disabled = false;
+        document.getElementById('btn-p').style.opacity = "1";
+        alert("✅ Accès Pro débloqué !");
+        closePay();
+    } else {
+        alert("❌ Code invalide. Veuillez payer et envoyer le reçu sur WhatsApp.");
     }
+}
+
+    
 
     function sauvegarderConfig() {
         const config = { nom: document.getElementById('in-nom').value, prof: document.getElementById('in-prof').value, infos: document.getElementById('in-infos').value, qr: document.getElementById('qr-link').value, bg: currentBg };
@@ -287,4 +299,5 @@
 </script>
 </body>
 </html>
+
 
