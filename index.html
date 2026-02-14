@@ -124,33 +124,31 @@
             </div>
         </div>
     </div>
-
-    <div id="modal-pay">
-        <div class="modal-content">
-            <h3 style="color:#27ae60;">💳 PAIEMENT SÉCURISÉ</h3>
-            <p style="font-weight:bold;">Tarif PDF PRO : 10 DT / 10 € / 10 $</p>
-            <p style="font-size:12px;">RIB : <b>TN59 12 30100 00133 06217243</b></p>
-            <a href="https://wa.me/21646248269?text=J'ai effectué le paiement" 
-   target="_blank" 
-   class="btn-action bg-green" 
-   onclick="libererButonCode()">
-   💬 ENVOYER LE REÇU (WHATSAPP)
-</a>
-
-             <hr>
-            
-
+<div id="modal-pay">
+    <div class="modal-content">
+        <h3 style="color:#27ae60;">💳 PAIEMENT SÉCURISÉ</h3>
+        <p style="font-weight:bold;">Tarif PDF PRO : 10 DT / 10 € / 10 $</p>
+        <p style="font-size:12px;">RIB : <b>TN59 12 30100 00133 06217243</b></p>
         
+        <a href="https://wa.me/21646248269?text=J'ai effectué le paiement" 
+           target="_blank" 
+           class="btn-action bg-green" 
+           onclick="libererBoutonCode()">
+           💬 ENVOYER LE REÇU (WHATSAPP)
+        </a>
+
+        <hr>
+
+        <div id="bloc-deblocage" style="display:none;">
+            <p style="font-size:11px; color:#666;">Une fois le paiement validé, entre ton code :</p>
+            <button class="btn-action bg-blue" onclick="debloquerAdmin()">
+                🛡️ ENTRER MON CODE DE DÉBLOCAGE
+            </button>
+        </div>
         
-  
-<div id="bloc-deblocage" style="display:none;">
-    <p style="font-size:11px; color:#666;">Une fois le paiement validé, entre ton code :</p>
-    <button class="btn-action bg-blue" onclick="debloquerAdmin()">
-        🛡️ ENTRER MON CODE DE DÉBLOCAGE
-    </button>
+        <button class="btn-action bg-red" style="width:100%; margin-top:10px;" onclick="closePay()">FERMER</button>
+    </div>
 </div>
-
-             </div>
 
 <script>
     const BASE = "https://raw.githubusercontent.com/sandy2378/studio-pro/main/images%20studio%20pro/";
@@ -175,7 +173,15 @@
 
     function openPay() { document.getElementById('modal-pay').style.display = 'flex'; }
     
-    
+    function closePay() {
+        document.getElementById('modal-pay').style.display = 'none';
+        document.getElementById('bloc-deblocage').style.display = 'none';
+    }
+
+    function libererBoutonCode() {
+        // Cette fonction affiche enfin le bouton bleu
+        document.getElementById('bloc-deblocage').style.display = 'block'; 
+    }
 
     function setAlign(a, btn) {
         textAlign = a;
@@ -183,22 +189,6 @@
         btn.classList.add('active');
         maj();
     }
-
-function libererBoutonCode() {
-    var bloc = document.getElementById('bloc-deblocage');
-    if (bloc) {
-        bloc.style.display = 'block'; 
-    }
-}
-
-function closePay() {
-    document.getElementById('modal-pay').style.display = 'none';
-    // On recache bien le bloc pour la sécurité
-    if(document.getElementById('bloc-deblocage')) {
-        document.getElementById('bloc-deblocage').style.display = 'none';
-    }
-}
-
 
     function maj() {
         const doc = document.getElementById('doc-final');
@@ -225,29 +215,13 @@ function closePay() {
         `;
 
         if(document.getElementById('qr-link').value) {
+            document.getElementById("qr").innerHTML = "";
             new QRCode(document.getElementById("qr"), { 
                 text: document.getElementById('qr-link').value, 
                 width: 70, height: 70, colorDark: qrColor, colorLight: "rgba(0,0,0,0)" 
             });
         }
     }
-function montrerSaisieCode() {
-    // Cette ligne fait apparaître la section cachée
-    document.getElementById('section-code').style.display = 'block';
-}
-
-
-function libererBoutonCode() {
-    // On cherche l'élément par son ID et on l'affiche
-    var bloc = document.getElementById('bloc-deblocage');
-    bloc.style.display = 'block'; 
-}
-
-// N'oubliez pas de le recacher quand on ferme la fenêtre
-function closePay() {
-    document.getElementById('modal-pay').style.display = 'none';
-    document.getElementById('bloc-deblocage').style.display = 'none';
-}
 
     function debloquerAdmin() {
         const d = new Date();
@@ -303,12 +277,3 @@ function closePay() {
 </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
