@@ -11,52 +11,33 @@
     
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Pacifico&family=Playfair+Display:wght@700&family=Dancing+Script:wght@700&family=Oswald:wght@700&display=swap" rel="stylesheet">
 
-
     <style>
         * { box-sizing: border-box; }
         body { font-family: 'Montserrat', sans-serif; background: #f0f2f5; margin: 0; padding: 10px; display: flex; flex-direction: column; align-items: center; }
-
-        .menu-modeles { 
-            display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; 
-            width: 100%; max-width: 500px; max-height: 120px; 
-            overflow-y: auto; background: white; padding: 10px; 
-            border-radius: 12px; margin-bottom: 10px; border: 1px solid #ddd;
-        }
+        .menu-modeles { display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; width: 100%; max-width: 500px; max-height: 120px; overflow-y: auto; background: white; padding: 10px; border-radius: 12px; margin-bottom: 10px; border: 1px solid #ddd; }
         .tab-btn { padding: 8px 2px; border: 1px solid #eee; border-radius: 6px; background: #f8f9fa; font-size: 10px; font-weight: bold; cursor: pointer; }
         .tab-btn.active { background: #2563eb; color: white; }
-        
         .container { display: flex; flex-direction: column; width: 100%; max-width: 450px; }
         #zone-edition { background: white; padding: 15px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        
         input, textarea, select { width: 100%; padding: 10px; margin-bottom: 8px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; }
         label { font-size: 12px; font-weight: bold; color: #444; display: block; margin-top: 8px; }
-
         .align-box { display: flex; gap: 5px; margin: 10px 0; }
         .align-btn { flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 8px; background: #f8f9fa; cursor: pointer; font-size: 11px; font-weight: bold;}
         .align-btn.active { background: #2563eb; color: white; border-color: #2563eb; }
-
-        #doc-final {
-            width: 340px; height: 480px; margin: 20px auto;
-            background-size: cover; background-position: center; position: relative;
-            border-radius: 10px; overflow: hidden; background-color: #fff;
-        }
+        #doc-final { width: 340px; height: 480px; margin: 20px auto; background-size: cover; background-position: center; position: relative; border-radius: 10px; overflow: hidden; background-color: #fff; border: 1px solid #ccc; }
         #doc-final.landscape { width: 480px !important; height: 300px !important; }
-
         .btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
         .btn-action { padding: 12px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; color: white; font-size: 11px; text-transform: uppercase; display: flex; align-items: center; justify-content: center; text-decoration: none;}
-        
         .bg-blue { background: #2563eb; } .bg-green { background: #27ae60; } .bg-orange { background: #f39c12; } 
         .bg-purple { background: #6c5ce7; } .bg-red { background: #e74c3c; } .bg-grey { background: #636e72; }
-
         #render-content { width: 100%; transition: 0.2s; position: absolute; }
-
         #modal-pay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; justify-content: center; align-items: center; padding: 20px; }
         .modal-content { background: white; padding: 20px; border-radius: 15px; text-align: center; width: 100%; max-width: 350px; }
     </style>
 </head>
 <body>
 
-    <h3 style="color:#2563eb; margin: 10px;">STUDIO PREMIIUM PRO</h3>
+    <h3 style="color:#2563eb; margin: 10px;">STUDIO PREMIUM PRO</h3>
 
     <div class="menu-modeles" id="menu-v"></div>
 
@@ -67,7 +48,7 @@
             <textarea id="in-infos" placeholder="Adresse, Tel, Email..." oninput="maj()"></textarea>
 
             <label>Lien QR Code</label>
-            <input type="text" id="qr-link" placeholder="Lien (ex: Facebook, WhatsApp...)" oninput="maj()">
+            <input type="text" id="qr-link" placeholder="Lien (ex: Facebook...)" oninput="maj()">
             
             <label>Couleur du QR Code</label>
             <select id="qr-col" onchange="maj()">
@@ -85,16 +66,26 @@
             </div>
 
             <div class="btn-grid">
-         <label>Style d'écriture (Police)</label>
-<select id="f-fam" onchange="maj()">
-    <option value="'Montserrat', sans-serif">Moderne (Standard)</option>
-    <option value="'Pacifico', cursive">Manuscrit (Calligraphie)</option>
-    <option value="'Playfair Display', serif">Luxe (Chic & Serif)</option>
-    <option value="'Dancing Script', cursive">Élégante (Fine)</option>
-    <option value="'Oswald', sans-serif">Impact (Fort & Serré)</option>
-</select>
-
-                <div><label>Couleur Texte</label><select id="f-col" onchange="maj()"><option value="black">Noir</option><option value="white">Blanc</option><option value="gold">Or</option><option value="pink">Rose</option></select></div>
+                <div>
+                    <label>Style d'écriture</label>
+                    <select id="f-fam" onchange="maj()">
+                        <option value="'Montserrat', sans-serif">Moderne</option>
+                        <option value="'Pacifico', cursive">Manuscrit</option>
+                        <option value="'Playfair Display', serif">Luxe</option>
+                        <option value="'Dancing Script', cursive">Élégante</option>
+                        <option value="'Oswald', sans-serif">Impact</option>
+                    </select>
+                </div>
+                <div>
+                    <label>Couleur Texte</label>
+                    <select id="f-col" onchange="maj()">
+                        <option value="black">Noir</option>
+                        <option value="white">Blanc</option>
+                        <option value="gold">Or</option>
+                        <option value="pink">Rose</option>
+                        <option value="green">Vert</option>
+                    </select>
+                </div>
             </div>
 
             <label>Position Verticale</label>
@@ -120,38 +111,30 @@
         <div id="doc-final">
             <div id="render-content"></div>
         </div>
+
+        <div style="background: #2d3436; color: white; padding: 15px; border-radius: 15px; margin-top: 15px; text-align: center;">
+            <h4 style="color:#f39c12; margin:0 0 10px 0;">🛡️ Sauvegarde & Secours</h4>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                <button class="btn-action bg-green" onclick="sauvegarderConfig()">📥 Télécharger (.txt)</button>
+                <label class="btn-action bg-orange">📤 Restaurer<input type="file" style="display:none" onchange="restaurerConfig(event)"></label>
+            </div>
+        </div>
     </div>
 
     <div id="modal-pay">
-    <div class="modal-content">
-        <h3 style="color:#27ae60;">💳 PAIEMENT SÉCURISÉ</h3>
-        <p style="font-weight:bold;">Tarif PDF PRO : 10 DT / 10 € / 10 $</p>
-        <p style="font-size:12px;">RIB : <b>TN59 12 30100 00133 06217243</b></p>
-        
-        <a href="https://wa.me/21646248269?text=J'ai effectué le paiement de 10" 
-           target="_blank" 
-           class="btn-action bg-green" 
-           style="width:100%; margin-bottom:10px; text-decoration:none;"
-           onclick="montrerBoutonCode()">💬 ENVOYER LE REÇU (WHATSAPP)</a>
-        
-        <hr>
-        
-        <div id="section-code" style="display:none;">
-            <p style="font-size:11px; color:#666;">Une fois le message envoyé, entre ton code ici :</p>
-            <button class="btn-action bg-blue" style="width:100%; margin-bottom:10px;" onclick="debloquerAdmin()">🛡️ ENTRER MON CODE DE DÉBLOCAGE</button>
+        <div class="modal-content">
+            <h3 style="color:#27ae60;">💳 PAIEMENT SÉCURISÉ</h3>
+            <p style="font-weight:bold;">Tarif PDF PRO : 10 DT / 10 € / 10 $</p>
+            <p style="font-size:12px;">RIB : <b>TN59 12 30100 00133 06217243</b></p>
+            <a href="https://wa.me/21646248269?text=J'ai effectué le paiement de 10" target="_blank" class="btn-action bg-green" style="width:100%; margin-bottom:10px; text-decoration:none;" onclick="montrerBoutonCode()">💬 ENVOYER LE REÇU (WHATSAPP)</a>
+            <hr>
+            <div id="section-code" style="display:none;">
+                <p style="font-size:11px; color:#666;">Entrez le code reçu :</p>
+                <button class="btn-action bg-blue" style="width:100%; margin-bottom:10px;" onclick="debloquerAdmin()">🛡️ ENTRER MON CODE</button>
+            </div>
+            <button class="btn-action bg-red" style="width:100%;" onclick="closePay()">FERMER</button>
         </div>
-
-        <button class="btn-action bg-red" style="width:100%;" onclick="closePay()">FERMER</button>
     </div>
-</div>
-
-<div style="background: #2d3436; color: white; padding: 15px; border-radius: 15px; margin-top: 15px; text-align: center;">
-    <h4 style="color:#f39c12; margin:0 0 10px 0;">🛡️ Sauvegarde & Secours</h4>
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-        <button class="btn-action bg-green" onclick="sauvegarderConfig()">📥 Télécharger (.txt)</button>
-        <label class="btn-action bg-orange">📤 Restaurer Sauvegarde<input type="file" style="display:none" onchange="restaurerConfig(event)"></label>
-    </div>
-</div>
 
 <script>
     const BASE = "https://raw.githubusercontent.com/sandy2378/studio-pro/main/images%20studio%20pro/";
@@ -159,6 +142,7 @@
     let logoData = null;
     let textAlign = 'center';
 
+    // Génération du menu
     const menu = document.getElementById('menu-v');
     for (let i = 1; i <= 64; i++) {
         let b = document.createElement('button');
@@ -174,7 +158,11 @@
     }
 
     function openPay() { document.getElementById('modal-pay').style.display = 'flex'; }
-    function closePay() { document.getElementById('modal-pay').style.display = 'none'; }
+    function closePay() { 
+        document.getElementById('modal-pay').style.display = 'none'; 
+        document.getElementById('section-code').style.display = 'none';
+    }
+    function montrerBoutonCode() { document.getElementById('section-code').style.display = 'block'; }
 
     function setAlign(a, btn) {
         textAlign = a;
@@ -183,153 +171,69 @@
         maj();
     }
 
-    
-function maj() {
-    const doc = document.getElementById('doc-final');
-    const render = document.getElementById('render-content');
-    
-    // 1. Récupération des valeurs des réglages
-    const tSize = document.getElementById('size-t').value;
-    const lSize = document.getElementById('size-l').value;
-    const qrColor = document.getElementById('qr-col').value;
-    const txtColor = document.getElementById('f-col').value; // Correction couleur texte
-    const posY = document.getElementById('pos-y').value; // Correction position
+    function maj() {
+        const doc = document.getElementById('doc-final');
+        const render = document.getElementById('render-content');
+        
+        const tSize = document.getElementById('size-t').value;
+        const lSize = document.getElementById('size-l').value;
+        const qrColor = document.getElementById('qr-col').value;
+        const txtColor = document.getElementById('f-col').value;
+        const police = document.getElementById('f-fam').value;
+        const posY = document.getElementById('pos-y').value;
 
-    // 2. Application du fond et du style global
-    doc.style.backgroundImage = `url('${currentBg}')`;
-    doc.style.color = txtColor;
-    doc.style.fontFamily = document.getElementById('f-fam').value;
-    
-    // 3. Application de la position verticale (top)
-    render.style.position = "absolute";
-    render.style.top = posY + "px";
-    render.style.width = "100%";
-    render.style.textAlign = textAlign;
+        doc.style.backgroundImage = `url('${currentBg}')`;
+        render.style.top = posY + "px";
+        render.style.textAlign = textAlign;
+        render.style.fontFamily = police;
 
-    // 4. Construction du contenu (Logo + Texte)
-    render.innerHTML = `
-        ${logoData ? `<img src="${logoData}" style="width:${lSize}px; margin-bottom:10px;">` : ''}
-        <h2 style="margin:0; font-size:${tSize}px; color:${txtColor};">${document.getElementById('in-nom').value || 'NOM'}</h2>
-        <p style="margin:5px 0; color:${txtColor};">${document.getElementById('in-prof').value || ''}</p>
-        <div style="font-size:12px; margin-top:10px; white-space:pre-wrap; color:${txtColor};">${document.getElementById('in-infos').value || ''}</div>
-        <div id="qr" style="margin-top:15px; display:flex; justify-content:${textAlign === 'left' ? 'flex-start' : (textAlign === 'right' ? 'flex-end' : 'center')}; padding:0 20px;"></div>
-    `;
+        render.innerHTML = `
+            ${logoData ? `<img src="${logoData}" style="width:${lSize}px; margin-bottom:10px;">` : ''}
+            <h2 style="margin:0; font-size:${tSize}px; color:${txtColor}; font-family:${police};">${document.getElementById('in-nom').value || 'NOM'}</h2>
+            <p style="margin:5px 0; color:${txtColor}; font-family:${police};">${document.getElementById('in-prof').value || ''}</p>
+            <div style="font-size:12px; margin-top:10px; white-space:pre-wrap; color:${txtColor}; font-family:${police};">${document.getElementById('in-infos').value || ''}</div>
+            <div id="qr" style="margin-top:15px; display:flex; justify-content:${textAlign === 'left' ? 'flex-start' : (textAlign === 'right' ? 'flex-end' : 'center')}; padding:0 20px;"></div>
+        `;
 
-    // 5. Génération du QR Code avec la couleur choisie
-    if(document.getElementById('qr-link').value) {
-        document.getElementById("qr").innerHTML = ""; // Vide le QR précédent
-        new QRCode(document.getElementById("qr"), { 
-            text: document.getElementById('qr-link').value, 
-            width: 70, 
-            height: 70,
-            colorDark: qrColor,
-            colorLight: "rgba(0,0,0,0)" // QR transparent derrière
-        });
+        if(document.getElementById('qr-link').value) {
+            new QRCode(document.getElementById("qr"), { 
+                text: document.getElementById('qr-link').value, 
+                width: 70, height: 70, colorDark: qrColor, colorLight: "rgba(0,0,0,0)" 
+            });
+        }
     }
-
 
     function debloquerAdmin() {
         const d = new Date();
-        const codeDuJour = "VENT" + String(d.getDate()).padStart(2, '0') + String(d.getMonth() + 1).padStart(2, '0');
-        let saisie = prompt("Entrez le code reçu (Format: VENT + jour et mois) :");
-        if (saisie === codeDuJour) {
+        const codeSecret = "VENT" + String(d.getDate()).padStart(2, '0') + String(d.getMonth() + 1).padStart(2, '0');
+        let saisie = prompt("Entrez le code secret :");
+        if (saisie === codeSecret) {
             document.getElementById('btn-p').disabled = false;
             document.getElementById('btn-p').style.opacity = "1";
-            alert("✅ PDF PRO ACTIVÉ !");
+            alert("✅ Accès Pro débloqué !");
             closePay();
-        } else { alert("❌ Code incorrect."); }
+        } else { alert("❌ Code invalide."); }
     }
-// Fonction pour sauvegarder la configuration en .txt
-function sauvegarderConfig() {
-    const config = {
-        nom: document.getElementById('in-nom').value,
-        prof: document.getElementById('in-prof').value,
-        infos: document.getElementById('in-infos').value,
-        qr: document.getElementById('qr-link').value,
-        posY: document.getElementById('pos-y').value,
-        bg: currentBg
-    };
-    const blob = new Blob([JSON.stringify(config)], {type: "text/plain"});
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = "studio_pro_backup.txt";
-    a.click();
-}
 
-// Fonction MAJ pour la couleur du texte et du QR
-function maj() {
-    const render = document.getElementById('render-content');
-    const doc = document.getElementById('doc-final');
-    
-    // 1. Récupération de la Police et de la Couleur (Tes captures 13970 & 13988)
-    const policeChoisie = document.getElementById('f-fam').value;
-    const couleurChoisie = document.getElementById('f-col').value;
-    const tailleTexte = document.getElementById('size-t').value;
-    const tailleLogo = document.getElementById('size-l').value;
-    const posY = document.getElementById('pos-y').value;
-
-    // 2. Application du Style Global
-    render.style.fontFamily = policeChoisie;
-    render.style.top = posY + "px"; // Applique la position verticale (Image 13969)
-
-    // 3. Mise à jour du Contenu (Nom, Profession, Infos)
-    // On force la police et la couleur sur chaque ligne
-    render.innerHTML = `
-        ${logoData ? `<img src="${logoData}" style="width:${tailleLogo}px; margin-bottom:10px;">` : ''}
-        <h2 style="margin:0; font-size:${tailleTexte}px; font-family:${policeChoisie}; color:${couleurChoisie};">
-            ${document.getElementById('in-nom').value || 'NOM'}
-        </h2>
-        <p style="margin:5px 0; font-family:${policeChoisie}; color:${couleurChoisie};">
-            ${document.getElementById('in-prof').value || ''}
-        </p>
-        <div style="font-size:12px; margin-top:10px; font-family:${policeChoisie}; color:${couleurChoisie}; white-space:pre-wrap;">
-            ${document.getElementById('in-infos').value || ''}
-        </div>
-        <div id="qr" style="margin-top:15px; display:flex; justify-content:center;"></div>
-    `;
-
-    // 4. Génération du QR Code avec sa propre couleur (Image 13977)
-    const qrLink = document.getElementById('qr-link').value;
-    const qrColor = document.getElementById('qr-col').value;
-    
-    if(qrLink) {
-        new QRCode(document.getElementById("qr"), { 
-            text: qrLink, 
-            width: 70, 
-            height: 70, 
-            colorDark: qrColor, // Utilise la couleur choisie pour le QR
-            colorLight: "rgba(0,0,0,0)" 
-        });
+    function sauvegarderConfig() {
+        const config = { nom: document.getElementById('in-nom').value, prof: document.getElementById('in-prof').value, infos: document.getElementById('in-infos').value, qr: document.getElementById('qr-link').value, bg: currentBg };
+        const blob = new Blob([JSON.stringify(config)], {type: "text/plain"});
+        const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = "backup.txt"; a.click();
     }
-}
 
-// Déblocage sécurisé : Le client doit te demander le code
-function debloquerAdmin() {
-    let saisie = prompt("Entrez le code secret reçu par WhatsApp :");
-    
-    // Le code change chaque jour. Aujourd'hui c'est VENT1402
-    const d = new Date();
-    const codeSecret = "VENT" + String(d.getDate()).padStart(2, '0') + String(d.getMonth() + 1).padStart(2, '0');
-
-    if (saisie === codeSecret) {
-        document.getElementById('btn-p').disabled = false;
-        document.getElementById('btn-p').style.opacity = "1";
-        alert("✅ Accès Pro débloqué !");
-        closePay();
-    } else {
-        alert("❌ Code invalide. Contactez l'administrateur.");
+    function restaurerConfig(e) {
+        const reader = new FileReader();
+        reader.onload = (f) => {
+            const c = JSON.parse(f.target.result);
+            document.getElementById('in-nom').value = c.nom;
+            document.getElementById('in-prof').value = c.prof;
+            document.getElementById('in-infos').value = c.infos;
+            document.getElementById('qr-link').value = c.qr;
+            currentBg = c.bg;
+            maj();
+        };
+        reader.readAsText(e.target.files[0]);
     }
-}
-function montrerBoutonCode() {
-    // Cette fonction affiche la section du code secret
-    document.getElementById('section-code').style.display = 'block';
-}
-
-// Optionnel : On recache le bouton quand on ferme la fenêtre pour la prochaine fois
-function closePay() {
-    document.getElementById('modal-pay').style.display = 'none';
-    document.getElementById('section-code').style.display = 'none';
-}
 
     function toggleRot() { document.getElementById('doc-final').classList.toggle('landscape'); maj(); }
     function loadL(e) { const r = new FileReader(); r.onload = (f) => { logoData = f.target.result; maj(); }; r.readAsDataURL(e.target.files[0]); }
@@ -348,24 +252,8 @@ function closePay() {
         pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, el.offsetWidth, el.offsetHeight);
         pdf.save("carte-pro.pdf");
     }
-    
 
     window.onload = () => { setTimeout(() => { document.querySelector('.tab-btn').click(); }, 500); };
 </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
