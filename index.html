@@ -129,7 +129,7 @@
             <a href="https://wa.me/21646248269?text=J'ai effectué le paiement" 
    target="_blank" 
    class="btn-action bg-green" 
-   onclick="activerEtapeCode()">
+   onclick="libererButtonCode()">
    💬 ENVOYER LE REÇU (WHATSAPP)
 </a>
 
@@ -137,13 +137,14 @@
             
 
         
-          <div id="bloc-deblocage" style="display: none; margin-top: 15px;">
-    <p style="font-size: 11px; color: #666;">Une fois le message envoyé, entre ton code :</p>
-    <button class="btn-action bg-blue" style="width: 100%;" onclick="debloquerAdmin()">
+        
+  
+<div id="bloc-deblocage" style="display:none;">
+    <p style="font-size:11px; color:#666;">Une fois le paiement validé, entre ton code :</p>
+    <button class="btn-action bg-blue" onclick="debloquerAdmin()">
         🛡️ ENTRER MON CODE DE DÉBLOCAGE
     </button>
 </div>
-  
 
              </div>
 
@@ -302,6 +303,7 @@ function closePay() {
 </script>
 </body>
 </html>
+
 
 
 
