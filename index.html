@@ -150,6 +150,7 @@
         </div>
     </div>
 
+<div onclick="activerAccesPublic()" style="position:fixed; bottom:0; right:0; width:20px; height:20px; cursor:pointer; opacity:0.1;">.</div>
 
 
 <script>
@@ -186,16 +187,33 @@
 
     
 
-function libererBoutonCode() {
-    // On affiche le bouton bleu
-    document.getElementById('bloc-deblocage').style.display = 'block';
-    
-    // On prévient l'utilisateur
-    alert("⚠️ ATTENTION : Le code de déblocage ne vous sera envoyé qu'APRÈS réception de votre preuve de paiement sur WhatsApp.");
+
+
+    // Variable qui contrôle si le bouton est cliquable ou non
+let accesAutorise = false;
+
+function activerAccesPublic() {
+    let pass = prompt("Mot de passe Admin :");
+    if(pass === "ADMIN123") { // Changez ce mot de passe
+        accesAutorise = true;
+        alert("✅ Système débloqué : Les clients peuvent maintenant voir le bouton du code.");
+    }
 }
 
+function libererBoutonCode() {
+    // Si VOUS n'avez pas activé l'accès, le bouton ne s'affichera JAMAIS
+    if (accesAutorise === false) {
+        alert("❌ En attente de validation de l'administrateur. Veuillez envoyer votre reçu WhatsApp d'abord.");
+        return; // On arrête tout ici
+    }
 
-    
+    // Si c'est autorisé, on affiche le bouton bleu
+    var bloc = document.getElementById('bloc-deblocage');
+    if (bloc) {
+        bloc.style.display = 'block';
+    }
+}
+
 
     function setAlign(a, btn) {
         textAlign = a;
@@ -299,5 +317,6 @@ function debloquerAdmin() {
 </script>
 </body>
 </html>
+
 
 
