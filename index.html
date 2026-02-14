@@ -111,20 +111,30 @@
             <div id="render-content"></div>
         </div>
     </div>
-<div id="modal-pay">
+
+    <div id="modal-pay">
     <div class="modal-content">
         <h3 style="color:#27ae60;">💳 PAIEMENT SÉCURISÉ</h3>
         <p style="font-weight:bold;">Tarif PDF PRO : 10 DT / 10 € / 10 $</p>
         <p style="font-size:12px;">RIB : <b>TN59 12 30100 00133 06217243</b></p>
         
-        <a href="https://wa.me/21646248269?text=J'ai effectué le paiement de 10" target="_blank" class="btn-action bg-green" style="width:100%; margin-bottom:10px; text-decoration:none;">💬 ENVOYER LE REÇU (WHATSAPP)</a>
+        <a href="https://wa.me/21646248269?text=J'ai effectué le paiement de 10" 
+           target="_blank" 
+           class="btn-action bg-green" 
+           style="width:100%; margin-bottom:10px; text-decoration:none;"
+           onclick="montrerBoutonCode()">💬 ENVOYER LE REÇU (WHATSAPP)</a>
         
         <hr>
-        <p style="font-size:11px; color:#666;">Une fois le paiement validé, entre ton code :</p>
-        <button class="btn-action bg-blue" style="width:100%; margin-bottom:10px;" onclick="debloquerAdmin()">🛡️ ENTRER MON CODE DE DÉBLOCAGE</button>
+        
+        <div id="section-code" style="display:none;">
+            <p style="font-size:11px; color:#666;">Une fois le message envoyé, entre ton code ici :</p>
+            <button class="btn-action bg-blue" style="width:100%; margin-bottom:10px;" onclick="debloquerAdmin()">🛡️ ENTRER MON CODE DE DÉBLOCAGE</button>
+        </div>
+
         <button class="btn-action bg-red" style="width:100%;" onclick="closePay()">FERMER</button>
     </div>
 </div>
+
 <div style="background: #2d3436; color: white; padding: 15px; border-radius: 15px; margin-top: 15px; text-align: center;">
     <h4 style="color:#f39c12; margin:0 0 10px 0;">🛡️ Sauvegarde & Secours</h4>
     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
@@ -281,6 +291,16 @@ function debloquerAdmin() {
         alert("❌ Code invalide. Contactez l'administrateur.");
     }
 }
+function montrerBoutonCode() {
+    // Cette fonction affiche la section du code secret
+    document.getElementById('section-code').style.display = 'block';
+}
+
+// Optionnel : On recache le bouton quand on ferme la fenêtre pour la prochaine fois
+function closePay() {
+    document.getElementById('modal-pay').style.display = 'none';
+    document.getElementById('section-code').style.display = 'none';
+}
 
     function toggleRot() { document.getElementById('doc-final').classList.toggle('landscape'); maj(); }
     function loadL(e) { const r = new FileReader(); r.onload = (f) => { logoData = f.target.result; maj(); }; r.readAsDataURL(e.target.files[0]); }
@@ -305,6 +325,7 @@ function debloquerAdmin() {
 </script>
 </body>
 </html>
+
 
 
 
