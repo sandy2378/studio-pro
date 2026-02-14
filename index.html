@@ -158,11 +158,17 @@
     }
 
     function openPay() { document.getElementById('modal-pay').style.display = 'flex'; }
-    function closePay() { 
-        document.getElementById('modal-pay').style.display = 'none'; 
-        document.getElementById('section-code').style.display = 'none';
-    }
-    function montrerBoutonCode() { document.getElementById('section-code').style.display = 'block'; }
+    
+    function closePay() {
+    document.getElementById('modal-pay').style.display = 'none';
+    // On recache la section du code pour la prochaine fois
+    document.getElementById('section-code').style.display = 'none';
+}
+
+function montrerBoutonCode() {
+    // Cette fonction affiche la section du code secret uniquement après le clic
+    document.getElementById('section-code').style.display = 'block';
+}
 
     function setAlign(a, btn) {
         textAlign = a;
@@ -257,3 +263,4 @@
 </script>
 </body>
 </html>
+
