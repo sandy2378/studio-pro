@@ -126,22 +126,24 @@
             <h3 style="color:#27ae60;">💳 PAIEMENT SÉCURISÉ</h3>
             <p style="font-weight:bold;">Tarif PDF PRO : 10 DT / 10 € / 10 $</p>
             <p style="font-size:12px;">RIB : <b>TN59 12 30100 00133 06217243</b></p>
-            
             <a href="https://wa.me/21646248269?text=J'ai effectué le paiement" 
    target="_blank" 
    class="btn-action bg-green" 
-   onclick="montrerSaisieCode()">
+   onclick="activerEtapeCode()">
    💬 ENVOYER LE REÇU (WHATSAPP)
 </a>
 
-            <hr>
-            <div id="section-code" style="display:none;">
-                <p style="font-size:11px; color:#666;">Entrez le code reçu :</p>
-                <button class="btn-action bg-blue" style="width:100%; margin-bottom:10px;" onclick="debloquerAdmin()">🛡️ ENTRER MON CODE</button>
-            </div>
-            <button class="btn-action bg-red" style="width:100%;" onclick="closePay()">FERMER</button>
-        </div>
-    </div>
+             <hr>
+            
+
+        <div id="zone-code-secret" style="display:none; margin-top:15px; border-top:1px solid #eee; padding-top:10px;">
+    <p style="font-size:11px; color:#666;">Une fois le paiement validé, entre ton code :</p>
+    <button class="btn-action bg-blue" style="width:100%;" onclick="ouvrirPromptCode()">
+        🛡️ ENTRER MON CODE DE DÉBLOCAGE
+    </button>
+</div>
+
+             </div>
 
 <script>
     const BASE = "https://raw.githubusercontent.com/sandy2378/studio-pro/main/images%20studio%20pro/";
@@ -183,6 +185,17 @@ function montrerBoutonCode() {
         btn.classList.add('active');
         maj();
     }
+    function activerEtapeCode() {
+    // Affiche la zone du code seulement quand l'utilisateur clique sur WhatsApp
+    document.getElementById('zone-code-secret').style.display = 'block';
+}
+
+function closePay() {
+    // Ferme la fenêtre et réinitialise l'affichage pour la prochaine fois
+    document.getElementById('modal-pay').style.display = 'none';
+    document.getElementById('zone-code-secret').style.display = 'none';
+}
+
 
     function maj() {
         const doc = document.getElementById('doc-final');
@@ -281,5 +294,6 @@ function closePay() {
 </script>
 </body>
 </html>
+
 
 
