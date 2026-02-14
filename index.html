@@ -66,6 +66,27 @@
     <div class="container">
         <div id="zone-edition">
             <input type="text" id="in-nom" placeholder="VOTRE NOM" oninput="maj()">
+            <label>Couleur du QR Code</label>
+<select id="qr-col" onchange="maj()">
+    <option value="#000000">Noir Classique</option>
+    <option value="#D4AF37">Or Premium</option>
+    <option value="#ffffff">Blanc Pur</option>
+</select>
+
+<label>Position Verticale du contenu</label>
+<input type="range" id="pos-y" min="0" max="400" value="150" oninput="maj()">
+
+<div class="btn-grid">
+    <div>
+        <label>Taille Texte</label>
+        <input type="range" id="size-t" min="10" max="50" value="24" oninput="maj()">
+    </div>
+    <div>
+        <label>Taille Logo</label>
+        <input type="range" id="size-l" min="20" max="150" value="70" oninput="maj()">
+    </div>
+</div>
+
             <input type="text" id="in-prof" placeholder="Sous-titre / Profession" oninput="maj()">
             <textarea id="in-infos" placeholder="Adresse, Tel, Email..." oninput="maj()"></textarea>
 
@@ -167,26 +188,37 @@
     }
 
     function maj() {
-        const doc = document.getElementById('doc-final');
-        const render = document.getElementById('render-content');
-        doc.style.backgroundImage = `url('${currentBg}')`;
-        doc.style.color = document.getElementById('f-col').value;
-        doc.style.fontFamily = document.getElementById('f-fam').value;
-        render.style.paddingTop = document.getElementById('pos-y').value + "px";
-        render.style.textAlign = textAlign;
+    const doc = document.getElementById('doc-final');
+    const render = document.getElementById('render-content');
+    
+    // Application de la position verticale et de l'alignement
+    render.style.paddingTop = document.getElementById('pos-y').value + "px";
+    render.style.textAlign = textAlign;
 
-        render.innerHTML = `
-            ${logoData ? `<img src="${logoData}" style="width:70px; margin-bottom:10px;">` : ''}
-            <h2 style="margin:0;">${document.getElementById('in-nom').value || 'NOM'}</h2>
-            <p style="margin:5px 0;">${document.getElementById('in-prof').value || ''}</p>
-            <div style="font-size:12px; margin-top:10px; white-space:pre-wrap;">${document.getElementById('in-infos').value || ''}</div>
-            <div id="qr" style="margin-top:15px; display:flex; justify-content:${textAlign === 'left' ? 'flex-start' : (textAlign === 'right' ? 'flex-end' : 'center')};"></div>
-        `;
+    // Récupération des tailles choisies par les curseurs
+    const tSize = document.getElementById('size-t').value;
+    const lSize = document.getElementById('size-l').value;
 
-        if(document.getElementById('qr-link').value) {
-            new QRCode(document.getElementById("qr"), { text: document.getElementById('qr-link').value, width: 70, height: 70 });
-        }
+    // Mise à jour de l'affichage du nom, du logo et des infos
+    render.innerHTML = `
+        ${logoData ? `<img src="${logoData}" style="width:${lSize}px; margin-bottom:10px;">` : ''}
+        <h2 style="margin:0; font-size:${tSize}px;">${document.getElementById('in-nom').value || 'NOM'}</h2>
+        <p style="margin:5px 0;">${document.getElementById('in-prof').value || ''}</p>
+        <div style="font-size:12px; margin-top:10px; white-space:pre-wrap;">${document.getElementById('in-infos').value || ''}</div>
+        <div id="qr" style="margin-top:15px; display:flex; justify-content:${textAlign === 'left' ? 'flex-start' : (textAlign === 'right' ? 'flex-end' : 'center')};"></div>
+    `;
+
+    // Génération du QR Code avec la couleur sélectionnée
+    if(document.getElementById('qr-link').value) {
+        new QRCode(document.getElementById("qr"), { 
+            text: document.getElementById('qr-link').value, 
+            width: 70, 
+            height: 70,
+            colorDark: document.getElementById('qr-col').value // Utilise la couleur choisie
+        });
     }
+}
+
 function debloquerAdmin() {
     // Génération du code du jour (Ex: VENT1402 pour le 14 Février)
     const d = new Date();
@@ -244,6 +276,7 @@ function debloquerAdmin() {
 </script>
 </body>
 </html>
+
 
 
 
