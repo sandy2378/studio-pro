@@ -187,18 +187,25 @@
     }
 
 function debloquerAdmin() {
-    let code = prompt("Veuillez entrer le code reçu par WhatsApp :");
+    // 1. On récupère la date du jour (ex: 14/02)
+    const maintenant = new Date();
+    const jour = String(maintenant.getDate()).padStart(2, '0');
+    const mois = String(maintenant.getMonth() + 1).padStart(2, '0');
     
-    if (code === "ADMIN2026") {
-        isPaid = true; // Active l'état payé
+    // 2. On crée le code dynamique : VENT + jour + mois
+    const codeCorrect = "VENT" + jour + mois;
+    
+    // 3. On demande le code à l'utilisateur
+    let saisie = prompt("Entrez votre code de déblocage (Format: VENT + jour et mois) :");
+    
+    if (saisie === codeCorrect) {
         document.getElementById('btn-p').disabled = false;
         document.getElementById('btn-p').style.opacity = "1";
-        document.getElementById('btn-p').style.background = "#27ae60"; // Devient vert
-        
-        alert("✅ Félicitations ! Le mode PDF PRO est maintenant activé.");
-        closePay(); // Ferme la fenêtre automatiquement
+        document.getElementById('btn-p').style.background = "#27ae60";
+        alert("✅ Accès accordé ! Le mode PDF PRO est activé pour la journée.");
+        closePay();
     } else {
-        alert("❌ Code incorrect. Veuillez contacter l'administrateur sur WhatsApp.");
+        alert("❌ Code invalide pour aujourd'hui. Veuillez vérifier auprès de l'administrateur.");
     }
 }
 
@@ -239,5 +246,6 @@ function debloquerAdmin() {
 </script>
 </body>
 </html>
+
 
 
