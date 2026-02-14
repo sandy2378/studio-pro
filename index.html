@@ -124,31 +124,33 @@
             </div>
         </div>
     </div>
-<div id="modal-pay">
-    <div class="modal-content">
-        <h3 style="color:#27ae60;">💳 PAIEMENT SÉCURISÉ</h3>
-        <p style="font-weight:bold;">Tarif PDF PRO : 10 DT / 10 € / 10 $</p>
-        <p style="font-size:12px;">RIB : <b>TN59 12 30100 00133 06217243</b></p>
-        
-        <a href="https://wa.me/21646248269?text=J'ai effectué le paiement" 
-           target="_blank" 
-           class="btn-action bg-green" 
-           onclick="libererBoutonCode()">
-           💬 ENVOYER LE REÇU (WHATSAPP)
-        </a>
+        <div id="modal-pay">
+        <div class="modal-content">
+            <h3 style="color:#27ae60;">💳 PAIEMENT SÉCURISÉ</h3>
+            <p style="font-weight:bold;">Tarif PDF PRO : 10 DT / 10 € / 10 $</p>
+            <p style="font-size:12px;">RIB : <b>TN59 12 30100 00133 06217243</b></p>
+            
+            <a href="https://wa.me/21646248269?text=J'ai effectué le paiement" 
+               target="_blank" 
+               class="btn-action bg-green" 
+               onclick="libererBoutonCode()">
+               💬 ENVOYER LE REÇU (WHATSAPP)
+            </a>
 
-        <hr>
+             <hr>
 
-        <div id="bloc-deblocage" style="display:none;">
-            <p style="font-size:11px; color:#666;">Une fois le paiement validé, entre ton code :</p>
-            <button class="btn-action bg-blue" onclick="debloquerAdmin()">
-                🛡️ ENTRER MON CODE DE DÉBLOCAGE
-            </button>
+            <div id="bloc-deblocage" style="display:none;">
+                <p style="font-size:11px; color:#666;">Une fois le paiement validé, entre ton code :</p>
+                <button class="btn-action bg-blue" onclick="debloquerAdmin()">
+                    🛡️ ENTRER MON CODE DE DÉBLOCAGE
+                </button>
+            </div>
+            
+            <button class="btn-action bg-red" style="width:100%; margin-top:10px;" onclick="closePay()">ANNULER / FERMER</button>
         </div>
-        
-        <button class="btn-action bg-red" style="width:100%; margin-top:10px;" onclick="closePay()">FERMER</button>
     </div>
-</div>
+
+
 
 <script>
     const BASE = "https://raw.githubusercontent.com/sandy2378/studio-pro/main/images%20studio%20pro/";
@@ -171,17 +173,25 @@
         menu.appendChild(b);
     }
 
-    function openPay() { document.getElementById('modal-pay').style.display = 'flex'; }
     
+        function openPay() { 
+        document.getElementById('modal-pay').style.display = 'flex'; 
+    }
+
     function closePay() {
         document.getElementById('modal-pay').style.display = 'none';
+        // Très important : on recache le bouton pour la prochaine fois
         document.getElementById('bloc-deblocage').style.display = 'none';
     }
 
     function libererBoutonCode() {
-        // Cette fonction affiche enfin le bouton bleu
+        // Cette fonction s'active UNIQUEMENT quand on clique sur le bouton WhatsApp
         document.getElementById('bloc-deblocage').style.display = 'block'; 
     }
+
+
+
+    
 
     function setAlign(a, btn) {
         textAlign = a;
@@ -277,3 +287,4 @@
 </script>
 </body>
 </html>
+
