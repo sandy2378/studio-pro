@@ -301,19 +301,31 @@ function debloquerAdmin() {
         const a = document.createElement('a'); a.download = 'carte.png'; a.href = canvas.toDataURL(); a.click();
     }
 
+    
     async function saveP() {
-        const el = document.getElementById('doc-final');
-        const canvas = await html2canvas(el, {scale: 3, useCORS: true});
-        const { jsPDF } = window.jspdf;
-        const pdf = new jsPDF(el.offsetWidth > el.offsetHeight ? 'l' : 'p', 'px', [el.offsetWidth, el.offsetHeight]);
-        pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, el.offsetWidth, el.offsetHeight);
-        pdf.save("carte-pro.pdf");
-    }
+    const el = document.getElementById('doc-final');
+    const canvas = await html2canvas(el, {scale: 3, useCORS: true});
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF(el.offsetWidth > el.offsetHeight ? 'l' : 'p', 'px', [el.offsetWidth, el.offsetHeight]);
+    pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, el.offsetWidth, el.offsetHeight);
+    
+    // 1. On lance le téléchargement
+    pdf.save("carte-pro.pdf");
+
+    // 2. SÉCURITÉ : On re-bloque le bouton immédiatement !
+    const btnPdf = document.getElementById('btn-p');
+    btnPdf.disabled = true;
+    btnPdf.style.opacity = "0.5";
+    
+    alert("✅ Téléchargement terminé. Pour une nouvelle carte, veuillez demander un nouveau code de validation.");
+}
+
 
     window.onload = () => { setTimeout(() => { document.querySelector('.tab-btn').click(); }, 500); };
 </script>
 </body>
 </html>
+
 
 
 
