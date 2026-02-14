@@ -175,16 +175,7 @@
 
     function openPay() { document.getElementById('modal-pay').style.display = 'flex'; }
     
-    function closePay() {
-    document.getElementById('modal-pay').style.display = 'none';
-    // On recache la section du code pour la prochaine fois
-    document.getElementById('section-code').style.display = 'none';
-}
-
-function montrerBoutonCode() {
-    // Cette fonction affiche la section du code secret uniquement après le clic
-    document.getElementById('section-code').style.display = 'block';
-}
+    
 
     function setAlign(a, btn) {
         textAlign = a;
@@ -192,15 +183,20 @@ function montrerBoutonCode() {
         btn.classList.add('active');
         maj();
     }
-    function activerEtapeCode() {
-    // Affiche la zone du code seulement quand l'utilisateur clique sur WhatsApp
-    document.getElementById('zone-code-secret').style.display = 'block';
+
+function libererBoutonCode() {
+    var bloc = document.getElementById('bloc-deblocage');
+    if (bloc) {
+        bloc.style.display = 'block'; 
+    }
 }
 
 function closePay() {
-    // Ferme la fenêtre et réinitialise l'affichage pour la prochaine fois
     document.getElementById('modal-pay').style.display = 'none';
-    document.getElementById('zone-code-secret').style.display = 'none';
+    // On recache bien le bloc pour la sécurité
+    if(document.getElementById('bloc-deblocage')) {
+        document.getElementById('bloc-deblocage').style.display = 'none';
+    }
 }
 
 
@@ -307,6 +303,7 @@ function closePay() {
 </script>
 </body>
 </html>
+
 
 
 
