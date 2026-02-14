@@ -1,250 +1,226 @@
-<!DOCTYPE html>
+    <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Studio Pro Expert - Version Totale</title>
+    <title>Studio Pro Expert - Restauration Totale</title>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-    
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Playfair+Display:wght@700&family=Montserrat:wght@400;700&family=Pacifico&family=Oswald:wght@700&display=swap" rel="stylesheet">
 
     <style>
         * { box-sizing: border-box; }
         body { font-family: 'Montserrat', sans-serif; background: #f0f2f5; margin: 0; padding: 10px; display: flex; flex-direction: column; align-items: center; }
 
-        /* Menu V1 à V64 */
         .menu-modeles { 
             display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; 
-            width: 100%; max-width: 500px; max-height: 160px; 
+            width: 100%; max-width: 500px; max-height: 140px; 
             overflow-y: auto; background: white; padding: 10px; 
-            border-radius: 12px; margin-bottom: 15px; border: 1px solid #ddd;
+            border-radius: 12px; margin-bottom: 10px; border: 1px solid #ddd;
         }
-        .tab-btn { padding: 8px 2px; border: 1px solid #eee; border-radius: 6px; background: #f8f9fa; font-size: 10px; font-weight: bold; cursor: pointer; transition: 0.2s; }
-        .tab-btn.active { background: #2563eb; color: white; border-color: #2563eb; }
+        .tab-btn { padding: 8px 2px; border: 1px solid #eee; border-radius: 6px; background: #f8f9fa; font-size: 10px; font-weight: bold; cursor: pointer; }
+        .tab-btn.active { background: #2563eb; color: white; }
         
-        .container { display: flex; flex-direction: column; width: 100%; max-width: 450px; gap: 10px; }
-        #zone-edition { background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .container { display: flex; flex-direction: column; width: 100%; max-width: 450px; }
+        #zone-edition { background: white; padding: 15px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
         
-        input, textarea, select { width: 100%; padding: 10px; margin-bottom: 8px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; }
-        label { font-size: 11px; font-weight: bold; color: #444; display: block; margin-top: 5px; }
+        input, textarea, select { width: 100%; padding: 8px; margin-bottom: 5px; border: 1px solid #ddd; border-radius: 8px; font-size: 13px; }
+        label { font-size: 10px; font-weight: bold; color: #444; display: block; margin-top: 5px; }
 
-        .preview-area { width: 100%; margin: 20px 0; display: flex; justify-content: center; }
+        /* Alignement buttons */
+        .align-box { display: flex; gap: 5px; margin: 5px 0; }
+        .align-btn { flex: 1; padding: 8px; border: 1px solid #ddd; border-radius: 8px; background: #f8f9fa; cursor: pointer; font-size: 11px; }
+        .align-btn.active { background: #2563eb; color: white; border-color: #2563eb; }
 
+        .preview-area { width: 100%; margin: 15px 0; display: flex; justify-content: center; }
         #doc-final {
-            width: 340px; height: 480px;
-            display: flex; flex-direction: column;
-            background-size: cover; background-position: center;
-            position: relative; border: 1px solid #eee; overflow: hidden;
-            background-color: #ffffff; transition: 0.3s;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            width: 340px; height: 480px; display: flex; flex-direction: column;
+            background-size: cover; background-position: center; position: relative;
+            border: 1px solid #eee; overflow: hidden; background-color: #fff;
         }
         #doc-final.landscape { width: 480px !important; height: 300px !important; }
+        .crop-marks { position: absolute; top:0; left:0; width:100%; height:100%; border: 2px dashed rgba(0,0,0,0.2); pointer-events:none; display:none; }
 
-        .watermark {
-            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-45deg);
-            font-size: 40px; color: rgba(0,0,0,0.1); font-weight: bold; pointer-events: none; z-index: 10;
-        }
+        .btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 8px; }
+        .btn-action { padding: 10px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; color: white; font-size: 10px; text-transform: uppercase; display: flex; align-items: center; justify-content: center; }
+        
+        .bg-blue { background: #2563eb; } .bg-green { background: #27ae60; } .bg-orange { background: #f39c12; } 
+        .bg-red { background: #e74c3c; } .bg-dark { background: #2d3436; } .bg-purple { background: #6c5ce7; }
+        .bg-grey { background: #636e72; }
 
-        .content-box { width: 100%; padding: 0 20px; z-index: 2; position: relative; }
-        .btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
-        .btn-action { padding: 12px; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; color: white; font-size: 11px; text-transform: uppercase; display: flex; align-items: center; justify-content: center; }
-
-        /* Couleurs des boutons */
-        .bg-blue { background: #2563eb; } 
-        .bg-green { background: #27ae60; } 
-        .bg-orange { background: #f39c12; } 
-        .bg-red { background: #e74c3c; } 
-        .bg-purple { background: #6c5ce7; } 
-        .bg-dark { background: #2d3436; }
-
-        .admin-panel { background: #2d3436; padding: 15px; border-radius: 15px; color: white; margin-top: 20px; width: 100%; max-width: 450px; }
-        .file-label { display: block; background: #6c5ce7; color: white; padding: 10px; border-radius: 8px; text-align: center; cursor: pointer; font-size: 11px; margin-top: 5px; }
+        #render-content { width: 100%; padding: 20px; transition: 0.2s; }
     </style>
 </head>
 <body>
 
-    <h2 style="color:#2563eb; margin-bottom:10px;">STUDIO PREMIIUM PRO</h2>
+    <h3 style="color:#2563eb; margin: 5px;">STUDIO PRO EXPERT</h3>
 
     <div class="menu-modeles" id="menu-v"></div>
 
     <div class="container">
         <div id="zone-edition">
-            <input type="text" id="in-nom" placeholder="VOTRE NOM / TITRE" oninput="maj()">
-            <input type="text" id="in-prof" placeholder="Profession / Sous-titre" oninput="maj()">
-            <textarea id="in-infos" placeholder="Contact, Adresse, Tel, Email..." oninput="maj()"></textarea>
+            <input type="text" id="in-nom" placeholder="VOTRE NOM" oninput="maj()">
+            <input type="text" id="in-prof" placeholder="Sous-titre / Profession" oninput="maj()">
+            <textarea id="in-infos" placeholder="Adresse, Tel, Email..." oninput="maj()"></textarea>
 
-            <label>QR Code (Lien WhatsApp ou Site Web)</label>
-            <input type="text" id="qr-link" placeholder="https://wa.me/..." oninput="maj()">
-            <select id="qr-color-select" onchange="maj()">
+            <label>QR Code (WhatsApp, Web...)</label>
+            <input type="text" id="qr-link" placeholder="https://..." oninput="maj()">
+            <select id="qr-col" onchange="maj()">
                 <option value="#000000">QR Noir Classique</option>
-                <option value="#25D366">QR Vert WhatsApp</option>
-                <option value="#1877F2">QR Bleu Facebook</option>
                 <option value="#D4AF37">QR Or Premium</option>
             </select>
 
-            <button class="btn-action bg-purple" style="width:100%; margin:10px 0;" onclick="toggleRotation()">🔄 PIVOTER (PORTRAIT/PAYSAGE)</button>
+            <button class="btn-action bg-purple" style="width:100%; margin:5px 0;" onclick="toggleRot()">🔄 PIVOTER LA CARTE</button>
 
-            <div class="btn-grid">
-                <select id="font-select" onchange="maj()">
-                    <option value="'Montserrat'">Moderne</option>
-                    <option value="'Playfair Display'">Chic Serif</option>
-                    <option value="'Dancing Script'">Élégante</option>
-                    <option value="'Pacifico'">Manuscrit</option>
-                    <option value="'Oswald'">Impact</option>
-                </select>
-                <select id="color-select" onchange="maj()">
-                    <option value="#000000">Texte Noir</option>
-                    <option value="#ffffff">Texte Blanc</option>
-                    <option value="#D4AF37">Texte Or</option>
-                    <option value="#2c3e50">Bleu Nuit</option>
-                </select>
+            <label>Alignement du Texte</label>
+            <div class="align-box">
+                <button class="align-btn" onclick="setAlign('left', this)">Gauche</button>
+                <button class="align-btn active" onclick="setAlign('center', this)">Centre</button>
+                <button class="align-btn" onclick="setAlign('right', this)">Droite</button>
             </div>
 
-            <label>Ajuster Hauteur du Texte</label>
-            <input type="range" id="pos-y" min="10" max="420" value="150" oninput="maj()">
-
             <div class="btn-grid">
-                <label class="file-label" style="margin:0; flex:1;">🚀 Logo Perso<input type="file" accept="image/*" style="display:none" onchange="loadLogo(event)"></label>
-                <label class="file-label" style="margin:0; flex:1; background:#e67e22;">🖼️ Fond Perso<input type="file" accept="image/*" style="display:none" onchange="loadBackground(event)"></label>
+                <div>
+                    <label>Police</label>
+                    <select id="f-fam" onchange="maj()">
+                        <option value="'Montserrat'">Moderne</option>
+                        <option value="'Playfair Display'">Chic Serif</option>
+                        <option value="'Dancing Script'">Élégante</option>
+                        <option value="'Pacifico'">Manuscrit</option>
+                    </select>
+                </div>
+                <div>
+                    <label>Couleur Texte</label>
+                    <select id="f-col" onchange="maj()">
+                        <option value="#000000">Noir Intense</option>
+                        <option value="#ffffff">Blanc Pur</option>
+                        <option value="#D4AF37">Or Sombre</option>
+                    </select>
+                </div>
             </div>
 
-            <button class="btn-action bg-dark" style="width:100%; margin:10px 0;" onclick="toggleEco()">🖨️ MODE ÉCO (FOND BLANC)</button>
+            <label>Position Verticale</label>
+            <input type="range" id="pos-y" min="0" max="400" value="150" oninput="maj()">
 
             <div class="btn-grid">
-                <button class="btn-action bg-blue" onclick="telechargerImage()">📥 IMAGE PNG</button>
+                <div>
+                    <label>Taille Texte</label>
+                    <input type="range" id="size-t" min="10" max="50" value="24" oninput="maj()">
+                </div>
+                <div>
+                    <label>Taille Logo</label>
+                    <input type="range" id="size-l" min="20" max="150" value="70" oninput="maj()">
+                </div>
+            </div>
+
+            <div class="btn-grid">
+                <label class="btn-action bg-orange">🚀 Logo Perso<input type="file" style="display:none" onchange="loadL(event)"></label>
+                <label class="btn-action bg-blue">🖼️ Fond Perso<input type="file" style="display:none" onchange="loadB(event)"></label>
+            </div>
+
+            <button class="btn-action bg-dark" style="width:100%; margin:8px 0;" onclick="toggleEco()">🖨️ MODE ÉCO (FOND BLANC)</button>
+            <button class="btn-action bg-grey" style="width:100%; margin-bottom:8px;" onclick="toggleCrop()">✂️ TRAITS DE COUPE</button>
+
+            <div class="btn-grid">
+                <button class="btn-action bg-blue" onclick="saveI()">📥 IMAGE PNG</button>
                 <button class="btn-action bg-green" onclick="payer()">💳 ACTIVER PDF</button>
-                <button id="btn-pdf" class="btn-action bg-orange" onclick="genererPDF()" disabled style="opacity:0.5;">📄 PDF PRO</button>
+                <button id="btn-p" class="btn-action bg-orange" style="opacity:0.5" disabled onclick="saveP()">📄 PDF PRO</button>
                 <button class="btn-action bg-red" onclick="location.reload()">🔄 RESET</button>
             </div>
         </div>
 
         <div class="preview-area">
             <div id="doc-final">
-                <div class="watermark" id="wm">PREVIEW</div>
-                <div id="render-content" class="content-box"></div>
+                <div id="crop" class="crop-marks"></div>
+                <div id="render-content"></div>
             </div>
-        </div>
-
-        <div class="admin-panel">
-            <h4>🛠️ ADMIN / CLOUD</h4>
-            <input type="text" placeholder="Nom du modèle Cloud" style="background: #444; color:white; border:none;">
-            <button class="btn-action bg-green" style="width:100%; margin-bottom:5px;">Enregistrer au Cloud</button>
-            <button onclick="saveBackup()" style="width:100%; padding:10px; border-radius:8px; border:none; cursor:pointer; font-weight:bold;">📥 Sauvegarder Config (.txt)</button>
         </div>
     </div>
 
 <script>
-    // Configuration GitHub
-    const BASE_URL = "https://raw.githubusercontent.com/sandy2378/studio-pro/main/images/";
-    let currentBg = BASE_URL + "visite1.jpg";
+    // CORRECTION DU DOSSIER : images studio pro
+    const BASE = "https://raw.githubusercontent.com/sandy2378/studio-pro/main/images%20studio%20pro/";
+    let currentBg = BASE + "visite1.jpg";
     let logoData = null;
-    let isEco = false;
-    let isPaid = false;
+    let textAlign = 'center';
+    let eco = false;
 
-    // Création des 64 boutons dynamiques
-    const menuV = document.getElementById('menu-v');
+    const menu = document.getElementById('menu-v');
     for (let i = 1; i <= 64; i++) {
-        let btn = document.createElement('button');
-        btn.className = 'tab-btn';
-        if(i === 1) btn.classList.add('active');
-        btn.innerText = 'V' + i;
-        btn.onclick = function() {
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        let b = document.createElement('button');
+        b.className = 'tab-btn';
+        b.innerText = 'V' + i;
+        b.onclick = function() {
+            document.querySelectorAll('.tab-btn').forEach(x => x.classList.remove('active'));
             this.classList.add('active');
-            currentBg = BASE_URL + "visite" + i + ".jpg";
-            isEco = false;
-            maj();
+            currentBg = BASE + "visite" + i + ".jpg";
+            eco = false; maj();
         };
-        menuV.appendChild(btn);
+        menu.appendChild(b);
+    }
+
+    function setAlign(a, btn) {
+        textAlign = a;
+        document.querySelectorAll('.align-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        maj();
     }
 
     function maj() {
         const doc = document.getElementById('doc-final');
         const render = document.getElementById('render-content');
         
-        // Apparence
-        doc.style.backgroundImage = isEco ? "none" : `url('${currentBg}')`;
-        doc.style.backgroundColor = isEco ? "#ffffff" : "transparent";
-        doc.style.color = document.getElementById('color-select').value;
-        doc.style.fontFamily = document.getElementById('font-select').value;
-        doc.style.paddingTop = document.getElementById('pos-y').value + "px";
-        doc.style.textAlign = "center";
+        doc.style.backgroundImage = eco ? "none" : `url('${currentBg}')`;
+        doc.style.color = document.getElementById('f-col').value;
+        doc.style.fontFamily = document.getElementById('f-fam').value;
+        render.style.paddingTop = document.getElementById('pos-y').value + "px";
+        render.style.textAlign = textAlign;
 
-        // Contenu
         render.innerHTML = `
-            ${logoData ? `<img src="${logoData}" style="width:70px; margin-bottom:10px;">` : ''}
-            <h2 style="margin:0; font-size:24px; line-height:1.2;">${document.getElementById('in-nom').value || 'VOTRE NOM'}</h2>
-            <h3 style="margin:5px 0; font-size:16px; font-weight:normal;">${document.getElementById('in-prof').value || ''}</h3>
-            <div style="font-size:12px; margin-top:15px; white-space: pre-wrap;">${document.getElementById('in-infos').value || ''}</div>
-            <div id="qrcode" style="display:flex; justify-content:center; margin-top:15px;"></div>
+            ${logoData ? `<img src="${logoData}" style="width:${document.getElementById('size-l').value}px; margin-bottom:10px;">` : ''}
+            <h2 style="margin:0; font-size:${document.getElementById('size-t').value}px;">${document.getElementById('in-nom').value || 'VOTRE NOM'}</h2>
+            <p style="margin:5px 0; font-size:16px; opacity:0.9;">${document.getElementById('in-prof').value || ''}</p>
+            <div style="font-size:12px; margin-top:10px; white-space:pre-wrap;">${document.getElementById('in-infos').value || ''}</div>
+            <div id="qr" style="margin-top:15px; display:flex; justify-content:${textAlign === 'left' ? 'flex-start' : (textAlign === 'right' ? 'flex-end' : 'center')};"></div>
         `;
 
-        // Génération QR Code
-        const qrContent = document.getElementById('qr-link').value;
-        if (qrContent.trim() !== "") {
-            new QRCode(document.getElementById("qrcode"), {
-                text: qrContent,
-                width: 75,
-                height: 75,
-                colorDark : document.getElementById('qr-color-select').value,
-                colorLight : "rgba(255,255,255,0)"
-            });
+        if(document.getElementById('qr-link').value) {
+            new QRCode(document.getElementById("qr"), { text: document.getElementById('qr-link').value, width: 70, height: 70, colorDark: document.getElementById('qr-col').value });
         }
     }
 
-    function toggleRotation() { document.getElementById('doc-final').classList.toggle('landscape'); maj(); }
-    function toggleEco() { isEco = !isEco; maj(); }
-    function loadLogo(e) { const r = new FileReader(); r.onload = (ev) => { logoData = ev.target.result; maj(); }; r.readAsDataURL(e.target.files[0]); }
-    function loadBackground(e) { const r = new FileReader(); r.onload = (ev) => { currentBg = ev.target.result; isEco=false; maj(); }; r.readAsDataURL(e.target.files[0]); }
-
+    function toggleRot() { document.getElementById('doc-final').classList.toggle('landscape'); maj(); }
+    function toggleEco() { eco = !eco; maj(); }
+    function toggleCrop() { const c = document.getElementById('crop'); c.style.display = c.style.display === 'block' ? 'none' : 'block'; }
+    function loadL(e) { const r = new FileReader(); r.onload = (f) => { logoData = f.target.result; maj(); }; r.readAsDataURL(e.target.files[0]); }
+    function loadB(e) { const r = new FileReader(); r.onload = (f) => { currentBg = f.target.result; eco=false; maj(); }; r.readAsDataURL(e.target.files[0]); }
+    
     function payer() {
-        let code = prompt("Entrez le code d'activation :");
-        if(code === "ADMIN2026") {
-            isPaid = true;
-            document.getElementById('wm').style.display = "none";
-            document.getElementById('btn-pdf').disabled = false;
-            document.getElementById('btn-pdf').style.opacity = "1";
-            document.getElementById('btn-pdf').classList.replace('bg-orange', 'bg-green');
-            alert("✅ Mode Professionnel Activé !");
-        } else {
-            alert("❌ Code incorrect.");
+        if(prompt("Code d'activation :") === "ADMIN2026") {
+            document.getElementById('btn-p').disabled = false;
+            document.getElementById('btn-p').style.opacity = "1";
+            alert("PDF Activé !");
         }
     }
 
-    async function telechargerImage() {
-        const doc = document.getElementById('doc-final');
-        const canvas = await html2canvas(doc, { scale: 2, useCORS: true });
-        const link = document.createElement('a');
-        link.download = 'ma-creation-studio.png';
-        link.href = canvas.toDataURL();
-        link.click();
+    async function saveI() {
+        const canvas = await html2canvas(document.getElementById('doc-final'), {useCORS: true, scale: 2});
+        const a = document.createElement('a'); a.download = 'carte.png'; a.href = canvas.toDataURL(); a.click();
     }
 
-    async function genererPDF() {
+    async function saveP() {
         const el = document.getElementById('doc-final');
-        const canvas = await html2canvas(el, { scale: 2, useCORS: true });
-        const imgData = canvas.toDataURL('image/png');
+        const canvas = await html2canvas(el, {scale: 2, useCORS: true});
         const { jsPDF } = window.jspdf;
         const pdf = new jsPDF(el.offsetWidth > el.offsetHeight ? 'l' : 'p', 'px', [el.offsetWidth, el.offsetHeight]);
-        pdf.addImage(imgData, 'PNG', 0, 0, el.offsetWidth, el.offsetHeight);
-        pdf.save("document-studio-pro.pdf");
+        pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, el.offsetWidth, el.offsetHeight);
+        pdf.save("carte.pdf");
     }
 
-    function saveBackup() {
-        const text = "Configuration Studio Pro - " + document.getElementById('in-nom').value;
-        const blob = new Blob([text], {type: 'text/plain'});
-        const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'backup.txt'; a.click();
-    }
-
-    window.onload = maj;
+    window.onload = () => { document.querySelector('.tab-btn').click(); };
 </script>
-
 </body>
 </html>
-
-
-
-
+                        
