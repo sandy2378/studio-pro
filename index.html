@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Studio Pro Expert - Version Finale</title>
+    <title>Studio Pro - Version Officielle</title>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -16,7 +16,7 @@
 
         .menu-modeles { 
             display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; 
-            width: 100%; max-width: 500px; max-height: 140px; 
+            width: 100%; max-width: 500px; max-height: 120px; 
             overflow-y: auto; background: white; padding: 10px; 
             border-radius: 12px; margin-bottom: 10px; border: 1px solid #ddd;
         }
@@ -26,74 +26,55 @@
         .container { display: flex; flex-direction: column; width: 100%; max-width: 450px; }
         #zone-edition { background: white; padding: 15px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
         
-        input, textarea, select { width: 100%; padding: 8px; margin-bottom: 5px; border: 1px solid #ddd; border-radius: 8px; font-size: 13px; }
-        label { font-size: 10px; font-weight: bold; color: #444; display: block; margin-top: 5px; }
+        input, textarea, select { width: 100%; padding: 10px; margin-bottom: 8px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; }
+        label { font-size: 12px; font-weight: bold; color: #444; display: block; margin-top: 8px; }
 
-        .align-box { display: flex; gap: 5px; margin: 5px 0; }
-        .align-btn { flex: 1; padding: 8px; border: 1px solid #ddd; border-radius: 8px; background: #f8f9fa; cursor: pointer; font-size: 11px; }
+        .align-box { display: flex; gap: 5px; margin: 10px 0; }
+        .align-btn { flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 8px; background: #f8f9fa; cursor: pointer; font-size: 11px; font-weight: bold;}
         .align-btn.active { background: #2563eb; color: white; border-color: #2563eb; }
 
-        .preview-area { width: 100%; margin: 15px 0; display: flex; justify-content: center; }
         #doc-final {
-            width: 340px; height: 480px; display: flex; flex-direction: column;
+            width: 340px; height: 480px; margin: 20px auto;
             background-size: cover; background-position: center; position: relative;
-            border: 1px solid #eee; overflow: hidden; background-color: #fff;
+            border-radius: 10px; overflow: hidden; background-color: #fff;
         }
         #doc-final.landscape { width: 480px !important; height: 300px !important; }
 
-        .btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 8px; }
-        .btn-action { padding: 10px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; color: white; font-size: 10px; text-transform: uppercase; display: flex; align-items: center; justify-content: center; text-decoration: none;}
+        .btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
+        .btn-action { padding: 12px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; color: white; font-size: 11px; text-transform: uppercase; display: flex; align-items: center; justify-content: center; text-decoration: none;}
         
         .bg-blue { background: #2563eb; } .bg-green { background: #27ae60; } .bg-orange { background: #f39c12; } 
-        .bg-red { background: #e74c3c; } .bg-dark { background: #2d3436; } .bg-purple { background: #6c5ce7; }
-        .bg-grey { background: #636e72; }
+        .bg-purple { background: #6c5ce7; } .bg-red { background: #e74c3c; } .bg-grey { background: #636e72; }
 
-        #render-content { width: 100%; padding: 20px; transition: 0.2s; }
+        #render-content { width: 100%; transition: 0.2s; position: absolute; }
 
-        /* Modal Paiement */
         #modal-pay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; justify-content: center; align-items: center; padding: 20px; }
-        .modal-content { background: white; padding: 20px; border-radius: 15px; max-width: 400px; width: 100%; text-align: center; }
-        
-        .admin-section { background: #2d3436; color: white; padding: 15px; border-radius: 15px; margin-top: 15px; }
+        .modal-content { background: white; padding: 20px; border-radius: 15px; text-align: center; width: 100%; max-width: 350px; }
     </style>
 </head>
 <body>
 
-    <h3 style="color:#2563eb; margin: 5px;">STUDIO PREMIIUM PRO</h3>
+    <h3 style="color:#2563eb; margin: 10px;">STUDIO PREMIIUM PRO</h3>
 
     <div class="menu-modeles" id="menu-v"></div>
 
     <div class="container">
         <div id="zone-edition">
-            <input type="text" id="in-nom" placeholder="VOTRE NOM" oninput="maj()">
-            <label>Couleur du QR Code</label>
-<select id="qr-col" onchange="maj()">
-    <option value="#000000">Noir Classique</option>
-    <option value="#D4AF37">Or Premium</option>
-    <option value="#ffffff">Blanc Pur</option>
-</select>
-
-<label>Position Verticale du contenu</label>
-<input type="range" id="pos-y" min="0" max="400" value="150" oninput="maj()">
-
-<div class="btn-grid">
-    <div>
-        <label>Taille Texte</label>
-        <input type="range" id="size-t" min="10" max="50" value="24" oninput="maj()">
-    </div>
-    <div>
-        <label>Taille Logo</label>
-        <input type="range" id="size-l" min="20" max="150" value="70" oninput="maj()">
-    </div>
-</div>
-
-            <input type="text" id="in-prof" placeholder="Sous-titre / Profession" oninput="maj()">
+            <input type="text" id="in-nom" placeholder="Nom / Titre" oninput="maj()">
+            <input type="text" id="in-prof" placeholder="Sous-titre" oninput="maj()">
             <textarea id="in-infos" placeholder="Adresse, Tel, Email..." oninput="maj()"></textarea>
 
-            <label>QR Code</label>
-            <input type="text" id="qr-link" placeholder="Lien..." oninput="maj()">
+            <label>Lien QR Code</label>
+            <input type="text" id="qr-link" placeholder="Lien (ex: Facebook, WhatsApp...)" oninput="maj()">
+            
+            <label>Couleur du QR Code</label>
+            <select id="qr-col" onchange="maj()">
+                <option value="#000000">Noir Classique</option>
+                <option value="#D4AF37">Or Sombre</option>
+                <option value="#ffffff">Blanc Pur</option>
+            </select>
 
-            <button class="btn-action bg-purple" style="width:100%; margin:5px 0;" onclick="toggleRot()">🔄 PIVOTER LA CARTE</button>
+            <button class="btn-action bg-purple" style="width:100%; margin:10px 0;" onclick="toggleRot()">🔄 PIVOTER LA CARTE</button>
 
             <div class="align-box">
                 <button class="align-btn" onclick="setAlign('left', this)">Gauche</button>
@@ -103,15 +84,20 @@
 
             <div class="btn-grid">
                 <div><label>Police</label><select id="f-fam" onchange="maj()"><option value="'Montserrat'">Moderne</option><option value="'Pacifico'">Manuscrit</option></select></div>
-                <div><label>Couleur</label><select id="f-col" onchange="maj()"><option value="#000000">Noir</option><option value="#ffffff">Blanc</option><option value="gold">gold</option><option value="green">green</option><option value="red">red</option><option value="blue">blue</option><option value="skyblue">skyblue</option><option value="pink">pink</option></select></div>
+                <div><label>Couleur Texte</label><select id="f-col" onchange="maj()"><option value="black">Noir</option><option value="white">Blanc</option><option value="gold">Or</option><option value="pink">Rose</option></select></div>
             </div>
 
             <label>Position Verticale</label>
             <input type="range" id="pos-y" min="0" max="400" value="150" oninput="maj()">
 
             <div class="btn-grid">
-                <label class="btn-action bg-orange">🚀 Logo<input type="file" style="display:none" onchange="loadL(event)"></label>
-                <label class="btn-action bg-blue">🖼️ Fond<input type="file" style="display:none" onchange="loadB(event)"></label>
+                <div><label>Taille Texte</label><input type="range" id="size-t" min="10" max="60" value="24" oninput="maj()"></div>
+                <div><label>Taille Logo</label><input type="range" id="size-l" min="20" max="150" value="70" oninput="maj()"></div>
+            </div>
+
+            <div class="btn-grid">
+                <label class="btn-action bg-orange">🚀 LOGO<input type="file" style="display:none" onchange="loadL(event)"></label>
+                <label class="btn-action bg-blue">🖼️ FOND<input type="file" style="display:none" onchange="loadB(event)"></label>
             </div>
 
             <div class="btn-grid">
@@ -121,41 +107,23 @@
             </div>
         </div>
 
-        <div class="preview-area">
-            <div id="doc-final">
-                <div id="render-content"></div>
-            </div>
-        </div>
-
-        <div class="admin-section">
-            <h4 style="color:#f39c12; margin:0 0 10px 0;">🛠️ GESTION & SAUVEGARDE</h4>
-            <div class="btn-grid">
-                <button class="btn-action bg-grey" onclick="sauvegarderConfig()">📥 SAUVEGARDER</button>
-                <label class="btn-action bg-grey">📤 RESTAURER<input type="file" style="display:none" onchange="restaurerConfig(event)"></label>
-            </div>
-            <button class="btn-action bg-blue" style="width:100%; margin-top:10px;" onclick="debloquerAdmin()">🛡️ ACTIVER AVEC CODE</button>
+        <div id="doc-final">
+            <div id="render-content"></div>
         </div>
     </div>
 
-    
-<div id="modal-pay">
-    <div class="modal-content">
-        <h3 style="color:#27ae60;">💳 PAIEMENT SÉCURISÉ</h3>
-        <p style="font-size:14px; font-weight:bold; color:#2d3436;">
-            Tarif PDF PRO : 10 DT / 10 € / 10 $
-        </p>
-        <p style="font-size:12px;">Veuillez effectuer le transfert sur le RIB suivant :</p>
-        <div style="background:#f8f9fa; padding:10px; border:1px dashed #27ae60; font-family:monospace; font-size:13px; margin:10px 0;">
-            TN59 12 30100 00133 06217243
+    <div id="modal-pay">
+        <div class="modal-content">
+            <h3 style="color:#27ae60;">💳 PAIEMENT SÉCURISÉ</h3>
+            <p>Tarif : 10 DT / 10 € / 10 $</p>
+            <div style="background:#f8f9fa; padding:10px; border:1px dashed #27ae60; font-weight:bold; margin:10px 0;">
+                RIB : TN59 12 30100 00133 06217243
+            </div>
+            <a href="https://wa.me/21646248269?text=J'ai fait le paiement" target="_blank" class="btn-action bg-green" style="width:100%; margin-bottom:10px;">💬 ENVOYER SUR WHATSAPP</a>
+            <button class="btn-action bg-blue" style="width:100%; margin-bottom:10px;" onclick="debloquerAdmin()">🛡️ ENTRER MON CODE</button>
+            <button class="btn-action bg-red" style="width:100%;" onclick="closePay()">FERMER</button>
         </div>
-        
-        <a href="https://wa.me/21646248269?text=Bonjour, j'ai payé pour débloquer ma carte (Tarif: 10DT/10€/10$)" target="_blank" class="btn-action bg-green" style="width:100%; margin-bottom:10px; text-decoration:none;">💬 ENVOYER LE REÇU (WHATSAPP)</a>
-        
-        <button class="btn-action bg-blue" style="width:100%; margin-bottom:10px;" onclick="debloquerAdmin()">🛡️ ENTRER MON CODE DE DÉBLOCAGE</button>
-        <button class="btn-action bg-red" style="width:100%;" onclick="closePay()">FERMER</button>
     </div>
-</div>
-
 
 <script>
     const BASE = "https://raw.githubusercontent.com/sandy2378/studio-pro/main/images%20studio%20pro/";
@@ -192,57 +160,56 @@ function maj() {
     const doc = document.getElementById('doc-final');
     const render = document.getElementById('render-content');
     
-    // Rétablit l'image de fond
-    doc.style.backgroundImage = `url('${currentBg}')`;
-    
-    // Récupère les valeurs des curseurs
+    // 1. Récupération des valeurs des réglages
     const tSize = document.getElementById('size-t').value;
     const lSize = document.getElementById('size-l').value;
+    const qrColor = document.getElementById('qr-col').value;
+    const txtColor = document.getElementById('f-col').value; // Correction couleur texte
+    const posY = document.getElementById('pos-y').value; // Correction position
+
+    // 2. Application du fond et du style global
+    doc.style.backgroundImage = `url('${currentBg}')`;
+    doc.style.color = txtColor;
+    doc.style.fontFamily = document.getElementById('f-fam').value;
     
-    // Applique la position
-    render.style.paddingTop = document.getElementById('pos-y').value + "px";
+    // 3. Application de la position verticale (top)
+    render.style.position = "absolute";
+    render.style.top = posY + "px";
+    render.style.width = "100%";
+    render.style.textAlign = textAlign;
 
-    // Affiche le logo avec la taille choisie
+    // 4. Construction du contenu (Logo + Texte)
     render.innerHTML = `
-        ${logoData ? `<img src="${logoData}" style="width:${lSize}px;">` : ''} 
-        <h2 style="font-size:${tSize}px;">${document.getElementById('in-nom').value}</h2>
-        ... 
+        ${logoData ? `<img src="${logoData}" style="width:${lSize}px; margin-bottom:10px;">` : ''}
+        <h2 style="margin:0; font-size:${tSize}px; color:${txtColor};">${document.getElementById('in-nom').value || 'NOM'}</h2>
+        <p style="margin:5px 0; color:${txtColor};">${document.getElementById('in-prof').value || ''}</p>
+        <div style="font-size:12px; margin-top:10px; white-space:pre-wrap; color:${txtColor};">${document.getElementById('in-infos').value || ''}</div>
+        <div id="qr" style="margin-top:15px; display:flex; justify-content:${textAlign === 'left' ? 'flex-start' : (textAlign === 'right' ? 'flex-end' : 'center')}; padding:0 20px;"></div>
     `;
-}
 
-function debloquerAdmin() {
-    // Génération du code du jour (Ex: VENT1402 pour le 14 Février)
-    const d = new Date();
-    const codeDuJour = "VENT" + 
-                       String(d.getDate()).padStart(2, '0') + 
-                       String(d.getMonth() + 1).padStart(2, '0');
-
-    let saisie = prompt("Entrez le code de déblocage reçu après paiement :");
-
-    if (saisie === codeDuJour) {
-        document.getElementById('btn-p').disabled = false;
-        document.getElementById('btn-p').style.opacity = "1";
-        document.getElementById('btn-p').style.background = "#27ae60";
-        alert("✅ Paiement validé ! Le bouton PDF PRO est maintenant actif.");
-        closePay();
-    } else {
-        alert("❌ Code incorrect ou expiré. Demandez le code du jour sur WhatsApp.");
+    // 5. Génération du QR Code avec la couleur choisie
+    if(document.getElementById('qr-link').value) {
+        document.getElementById("qr").innerHTML = ""; // Vide le QR précédent
+        new QRCode(document.getElementById("qr"), { 
+            text: document.getElementById('qr-link').value, 
+            width: 70, 
+            height: 70,
+            colorDark: qrColor,
+            colorLight: "rgba(0,0,0,0)" // QR transparent derrière
+        });
     }
 }
 
-    function sauvegarderConfig() {
-        const config = { nom: document.getElementById('in-nom').value, prof: document.getElementById('in-prof').value, infos: document.getElementById('in-infos').value, bg: currentBg, align: textAlign };
-        const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([JSON.stringify(config)], {type: "application/json"})); a.download = "config.json"; a.click();
-    }
-
-    function restaurerConfig(e) {
-        const r = new FileReader();
-        r.onload = (f) => {
-            const c = JSON.parse(f.target.result);
-            document.getElementById('in-nom').value = c.nom; document.getElementById('in-prof').value = c.prof; document.getElementById('in-infos').value = c.infos;
-            currentBg = c.bg; textAlign = c.align; maj();
-        };
-        r.readAsText(e.target.files[0]);
+    function debloquerAdmin() {
+        const d = new Date();
+        const codeDuJour = "VENT" + String(d.getDate()).padStart(2, '0') + String(d.getMonth() + 1).padStart(2, '0');
+        let saisie = prompt("Entrez le code reçu (Format: VENT + jour et mois) :");
+        if (saisie === codeDuJour) {
+            document.getElementById('btn-p').disabled = false;
+            document.getElementById('btn-p').style.opacity = "1";
+            alert("✅ PDF PRO ACTIVÉ !");
+            closePay();
+        } else { alert("❌ Code incorrect."); }
     }
 
     function toggleRot() { document.getElementById('doc-final').classList.toggle('landscape'); maj(); }
@@ -256,17 +223,18 @@ function debloquerAdmin() {
 
     async function saveP() {
         const el = document.getElementById('doc-final');
-        const canvas = await html2canvas(el, {scale: 2, useCORS: true});
+        const canvas = await html2canvas(el, {scale: 3, useCORS: true});
         const { jsPDF } = window.jspdf;
         const pdf = new jsPDF(el.offsetWidth > el.offsetHeight ? 'l' : 'p', 'px', [el.offsetWidth, el.offsetHeight]);
         pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, el.offsetWidth, el.offsetHeight);
         pdf.save("carte-pro.pdf");
     }
 
-    window.onload = () => { document.querySelector('.tab-btn').click(); };
+    window.onload = () => { setTimeout(() => { document.querySelector('.tab-btn').click(); }, 500); };
 </script>
 </body>
 </html>
+
 
 
 
