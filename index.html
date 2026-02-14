@@ -186,13 +186,21 @@
         }
     }
 
-    function debloquerAdmin() {
-        if(prompt("Code d'activation :") === "ADMIN2026") {
-            document.getElementById('btn-p').disabled = false;
-            document.getElementById('btn-p').style.opacity = "1";
-            alert("✅ PDF Activé !");
-        }
+function debloquerAdmin() {
+    let code = prompt("Veuillez entrer le code reçu par WhatsApp :");
+    
+    if (code === "ADMIN2026") {
+        isPaid = true; // Active l'état payé
+        document.getElementById('btn-p').disabled = false;
+        document.getElementById('btn-p').style.opacity = "1";
+        document.getElementById('btn-p').style.background = "#27ae60"; // Devient vert
+        
+        alert("✅ Félicitations ! Le mode PDF PRO est maintenant activé.");
+        closePay(); // Ferme la fenêtre automatiquement
+    } else {
+        alert("❌ Code incorrect. Veuillez contacter l'administrateur sur WhatsApp.");
     }
+}
 
     function sauvegarderConfig() {
         const config = { nom: document.getElementById('in-nom').value, prof: document.getElementById('in-prof').value, infos: document.getElementById('in-infos').value, bg: currentBg, align: textAlign };
@@ -231,4 +239,5 @@
 </script>
 </body>
 </html>
+
 
