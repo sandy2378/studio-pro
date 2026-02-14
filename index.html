@@ -126,7 +126,14 @@
             <h3 style="color:#27ae60;">💳 PAIEMENT SÉCURISÉ</h3>
             <p style="font-weight:bold;">Tarif PDF PRO : 10 DT / 10 € / 10 $</p>
             <p style="font-size:12px;">RIB : <b>TN59 12 30100 00133 06217243</b></p>
-            <a href="https://wa.me/21646248269?text=J'ai effectué le paiement de 10" target="_blank" class="btn-action bg-green" style="width:100%; margin-bottom:10px; text-decoration:none;" onclick="montrerBoutonCode()">💬 ENVOYER LE REÇU (WHATSAPP)</a>
+            
+            <a href="https://wa.me/21646248269?text=J'ai effectué le paiement" 
+   target="_blank" 
+   class="btn-action bg-green" 
+   onclick="montrerSaisieCode()">
+   💬 ENVOYER LE REÇU (WHATSAPP)
+</a>
+
             <hr>
             <div id="section-code" style="display:none;">
                 <p style="font-size:11px; color:#666;">Entrez le code reçu :</p>
@@ -208,6 +215,17 @@ function montrerBoutonCode() {
             });
         }
     }
+function montrerSaisieCode() {
+    // Cette ligne fait apparaître la section cachée
+    document.getElementById('section-code').style.display = 'block';
+}
+
+function closePay() {
+    // On referme le modal
+    document.getElementById('modal-pay').style.display = 'none';
+    // IMPORTANT : On recache la section pour la prochaine fois
+    document.getElementById('section-code').style.display = 'none';
+}
 
     function debloquerAdmin() {
         const d = new Date();
@@ -263,4 +281,5 @@ function montrerBoutonCode() {
 </script>
 </body>
 </html>
+
 
