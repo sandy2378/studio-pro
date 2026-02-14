@@ -187,36 +187,27 @@
         maj();
     }
 
-    function maj() {
+    
+function maj() {
     const doc = document.getElementById('doc-final');
     const render = document.getElementById('render-content');
     
-    // Application de la position verticale et de l'alignement
-    render.style.paddingTop = document.getElementById('pos-y').value + "px";
-    render.style.textAlign = textAlign;
-
-    // Récupération des tailles choisies par les curseurs
+    // Rétablit l'image de fond
+    doc.style.backgroundImage = `url('${currentBg}')`;
+    
+    // Récupère les valeurs des curseurs
     const tSize = document.getElementById('size-t').value;
     const lSize = document.getElementById('size-l').value;
+    
+    // Applique la position
+    render.style.paddingTop = document.getElementById('pos-y').value + "px";
 
-    // Mise à jour de l'affichage du nom, du logo et des infos
+    // Affiche le logo avec la taille choisie
     render.innerHTML = `
-        ${logoData ? `<img src="${logoData}" style="width:${lSize}px; margin-bottom:10px;">` : ''}
-        <h2 style="margin:0; font-size:${tSize}px;">${document.getElementById('in-nom').value || 'NOM'}</h2>
-        <p style="margin:5px 0;">${document.getElementById('in-prof').value || ''}</p>
-        <div style="font-size:12px; margin-top:10px; white-space:pre-wrap;">${document.getElementById('in-infos').value || ''}</div>
-        <div id="qr" style="margin-top:15px; display:flex; justify-content:${textAlign === 'left' ? 'flex-start' : (textAlign === 'right' ? 'flex-end' : 'center')};"></div>
+        ${logoData ? `<img src="${logoData}" style="width:${lSize}px;">` : ''} 
+        <h2 style="font-size:${tSize}px;">${document.getElementById('in-nom').value}</h2>
+        ... 
     `;
-
-    // Génération du QR Code avec la couleur sélectionnée
-    if(document.getElementById('qr-link').value) {
-        new QRCode(document.getElementById("qr"), { 
-            text: document.getElementById('qr-link').value, 
-            width: 70, 
-            height: 70,
-            colorDark: document.getElementById('qr-col').value // Utilise la couleur choisie
-        });
-    }
 }
 
 function debloquerAdmin() {
@@ -276,6 +267,7 @@ function debloquerAdmin() {
 </script>
 </body>
 </html>
+
 
 
 
