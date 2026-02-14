@@ -199,20 +199,17 @@ function activerAccesPublic() {
         alert("✅ Système débloqué : Les clients peuvent maintenant voir le bouton du code.");
     }
 }
-
 function libererBoutonCode() {
-    // Si VOUS n'avez pas activé l'accès, le bouton ne s'affichera JAMAIS
-    if (accesAutorise === false) {
-        alert("❌ En attente de validation de l'administrateur. Veuillez envoyer votre reçu WhatsApp d'abord.");
-        return; // On arrête tout ici
-    }
-
-    // Si c'est autorisé, on affiche le bouton bleu
+    // Cette ligne force l'affichage du bloc qui contient le bouton bleu
     var bloc = document.getElementById('bloc-deblocage');
     if (bloc) {
         bloc.style.display = 'block';
+        console.log("Le bouton est maintenant visible");
+    } else {
+        alert("Erreur : l'élément bloc-deblocage n'existe pas dans le HTML");
     }
 }
+
 
 
     function setAlign(a, btn) {
@@ -317,6 +314,7 @@ function debloquerAdmin() {
 </script>
 </body>
 </html>
+
 
 
 
