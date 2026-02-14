@@ -117,18 +117,20 @@
     </div>
 
     
-    <div id="modal-pay">
+<div id="modal-pay">
     <div class="modal-content">
         <h3 style="color:#27ae60;">💳 PAIEMENT SÉCURISÉ</h3>
-        <p style="font-size:13px;">RIB : <b>TN59 12 30100 00133 06217243</b></p>
+        <p style="font-size:14px; font-weight:bold; color:#2d3436;">
+            Tarif PDF PRO : 10 DT / 5 € / 6 $
+        </p>
+        <p style="font-size:12px;">Veuillez effectuer le transfert sur le RIB suivant :</p>
+        <div style="background:#f8f9fa; padding:10px; border:1px dashed #27ae60; font-family:monospace; font-size:13px; margin:10px 0;">
+            TN59 12 30100 00133 06217243
+        </div>
         
-        <a href="https://wa.me/21646248269?text=J'ai effectué le paiement" target="_blank" class="btn-action bg-green" style="width:100%; margin-bottom:10px; text-decoration:none;">💬 ENVOYER LE REÇU (WHATSAPP)</a>
+        <a href="https://wa.me/21646248269?text=Bonjour, j'ai payé pour débloquer ma carte (Tarif: 10DT/5€/6$)" target="_blank" class="btn-action bg-green" style="width:100%; margin-bottom:10px; text-decoration:none;">💬 ENVOYER LE REÇU (WHATSAPP)</a>
         
-        <hr style="border:0; border-top:1px solid #eee; margin:15px 0;">
-        
-        <p style="font-size:12px; color:#666;">Déjà payé ? Entre ton code ici :</p>
         <button class="btn-action bg-blue" style="width:100%; margin-bottom:10px;" onclick="debloquerAdmin()">🛡️ ENTRER MON CODE DE DÉBLOCAGE</button>
-        
         <button class="btn-action bg-red" style="width:100%;" onclick="closePay()">FERMER</button>
     </div>
 </div>
@@ -185,27 +187,23 @@
             new QRCode(document.getElementById("qr"), { text: document.getElementById('qr-link').value, width: 70, height: 70 });
         }
     }
-
 function debloquerAdmin() {
-    // 1. On récupère la date du jour (ex: 14/02)
-    const maintenant = new Date();
-    const jour = String(maintenant.getDate()).padStart(2, '0');
-    const mois = String(maintenant.getMonth() + 1).padStart(2, '0');
-    
-    // 2. On crée le code dynamique : VENT + jour + mois
-    const codeCorrect = "VENT" + jour + mois;
-    
-    // 3. On demande le code à l'utilisateur
-    let saisie = prompt("Entrez votre code de déblocage (Format: VENT + jour et mois) :");
-    
-    if (saisie === codeCorrect) {
+    // Génération du code du jour (Ex: VENT1402 pour le 14 Février)
+    const d = new Date();
+    const codeDuJour = "VENT" + 
+                       String(d.getDate()).padStart(2, '0') + 
+                       String(d.getMonth() + 1).padStart(2, '0');
+
+    let saisie = prompt("Entrez le code de déblocage reçu après paiement :");
+
+    if (saisie === codeDuJour) {
         document.getElementById('btn-p').disabled = false;
         document.getElementById('btn-p').style.opacity = "1";
         document.getElementById('btn-p').style.background = "#27ae60";
-        alert("✅ Accès accordé ! Le mode PDF PRO est activé pour la journée.");
+        alert("✅ Paiement validé ! Le bouton PDF PRO est maintenant actif.");
         closePay();
     } else {
-        alert("❌ Code invalide pour aujourd'hui. Veuillez vérifier auprès de l'administrateur.");
+        alert("❌ Code incorrect ou expiré. Demandez le code du jour sur WhatsApp.");
     }
 }
 
@@ -246,6 +244,7 @@ function debloquerAdmin() {
 </script>
 </body>
 </html>
+
 
 
 
