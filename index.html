@@ -111,19 +111,27 @@
             <div id="render-content"></div>
         </div>
     </div>
-
-    <div id="modal-pay">
-        <div class="modal-content">
-            <h3 style="color:#27ae60;">💳 PAIEMENT SÉCURISÉ</h3>
-            <p>Tarif : 10 DT / 10 € / 10 $</p>
-            <div style="background:#f8f9fa; padding:10px; border:1px dashed #27ae60; font-weight:bold; margin:10px 0;">
-                RIB : TN59 12 30100 00133 06217243
-            </div>
-            <a href="https://wa.me/21646248269?text=J'ai fait le paiement" target="_blank" class="btn-action bg-green" style="width:100%; margin-bottom:10px;">💬 ENVOYER SUR WHATSAPP</a>
-            <button class="btn-action bg-blue" style="width:100%; margin-bottom:10px;" onclick="debloquerAdmin()">🛡️ ENTRER MON CODE</button>
-            <button class="btn-action bg-red" style="width:100%;" onclick="closePay()">FERMER</button>
-        </div>
+<div id="modal-pay">
+    <div class="modal-content">
+        <h3 style="color:#27ae60;">💳 PAIEMENT SÉCURISÉ</h3>
+        <p style="font-weight:bold;">Tarif PDF PRO : 10 DT / 10 € / 10 $</p>
+        <p style="font-size:12px;">RIB : <b>TN59 12 30100 00133 06217243</b></p>
+        
+        <a href="https://wa.me/21646248269?text=J'ai effectué le paiement de 10" target="_blank" class="btn-action bg-green" style="width:100%; margin-bottom:10px; text-decoration:none;">💬 ENVOYER LE REÇU (WHATSAPP)</a>
+        
+        <hr>
+        <p style="font-size:11px; color:#666;">Une fois le paiement validé, entre ton code :</p>
+        <button class="btn-action bg-blue" style="width:100%; margin-bottom:10px;" onclick="debloquerAdmin()">🛡️ ENTRER MON CODE DE DÉBLOCAGE</button>
+        <button class="btn-action bg-red" style="width:100%;" onclick="closePay()">FERMER</button>
     </div>
+</div>
+<div style="background: #2d3436; color: white; padding: 15px; border-radius: 15px; margin-top: 15px; text-align: center;">
+    <h4 style="color:#f39c12; margin:0 0 10px 0;">🛡️ Sauvegarde & Secours</h4>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+        <button class="btn-action bg-green" onclick="sauvegarderConfig()">📥 Télécharger (.txt)</button>
+        <label class="btn-action bg-orange">📤 Restaurer Sauvegarde<input type="file" style="display:none" onchange="restaurerConfig(event)"></label>
+    </div>
+</div>
 
 <script>
     const BASE = "https://raw.githubusercontent.com/sandy2378/studio-pro/main/images%20studio%20pro/";
@@ -211,6 +219,68 @@ function maj() {
             closePay();
         } else { alert("❌ Code incorrect."); }
     }
+// Fonction pour sauvegarder la configuration en .txt
+function sauvegarderConfig() {
+    const config = {
+        nom: document.getElementById('in-nom').value,
+        prof: document.getElementById('in-prof').value,
+        infos: document.getElementById('in-infos').value,
+        qr: document.getElementById('qr-link').value,
+        posY: document.getElementById('pos-y').value,
+        bg: currentBg
+    };
+    const blob = new Blob([JSON.stringify(config)], {type: "text/plain"});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = "studio_pro_backup.txt";
+    a.click();
+}
+
+// Fonction MAJ pour la couleur du texte et du QR
+function maj() {
+    const doc = document.getElementById('doc-final');
+    const render = document.getElementById('render-content');
+    const txtColor = document.getElementById('f-col').value; // Récupère la couleur choisie
+
+    doc.style.backgroundImage = `url('${currentBg}')`;
+    doc.style.color = txtColor; // Applique la couleur au texte
+    render.style.top = document.getElementById('pos-y').value + "px"; // Position verticale
+    render.style.textAlign = textAlign;
+
+    render.innerHTML = `
+        ${logoData ? `<img src="${logoData}" style="width:${document.getElementById('size-l').value}px;">` : ''}
+        <h2 style="font-size:${document.getElementById('size-t').value}px; color:${txtColor};">${document.getElementById('in-nom').value || 'NOM'}</h2>
+        <p style="color:${txtColor};">${document.getElementById('in-prof').value || ''}</p>
+        <div style="color:${txtColor}; font-size:12px;">${document.getElementById('in-infos').value || ''}</div>
+        <div id="qr" style="margin-top:10px; display:flex; justify-content:center;"></div>
+    `;
+
+    if(document.getElementById('qr-link').value) {
+        new QRCode(document.getElementById("qr"), { 
+            text: document.getElementById('qr-link').value, 
+            width: 70, height: 70, 
+            colorDark: document.getElementById('qr-col').value // Couleur QR
+        });
+    }
+}
+
+// Déblocage sécurisé : Le client doit te demander le code
+function debloquerAdmin() {
+    let saisie = prompt("Entrez le code secret reçu par WhatsApp :");
+    
+    // Le code change chaque jour. Aujourd'hui c'est VENT1402
+    const d = new Date();
+    const codeSecret = "VENT" + String(d.getDate()).padStart(2, '0') + String(d.getMonth() + 1).padStart(2, '0');
+
+    if (saisie === codeSecret) {
+        document.getElementById('btn-p').disabled = false;
+        document.getElementById('btn-p').style.opacity = "1";
+        alert("✅ Accès Pro débloqué !");
+        closePay();
+    } else {
+        alert("❌ Code invalide. Contactez l'administrateur.");
+    }
+}
 
     function toggleRot() { document.getElementById('doc-final').classList.toggle('landscape'); maj(); }
     function loadL(e) { const r = new FileReader(); r.onload = (f) => { logoData = f.target.result; maj(); }; r.readAsDataURL(e.target.files[0]); }
@@ -229,11 +299,13 @@ function maj() {
         pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, el.offsetWidth, el.offsetHeight);
         pdf.save("carte-pro.pdf");
     }
+    
 
     window.onload = () => { setTimeout(() => { document.querySelector('.tab-btn').click(); }, 500); };
 </script>
 </body>
 </html>
+
 
 
 
