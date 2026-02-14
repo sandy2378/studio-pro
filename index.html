@@ -8,7 +8,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Playfair+Display:wght@700&family=Montserrat:wght@400;700&family=Pacifico&family=Oswald:wght@700&display=swap" rel="stylesheet">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Pacifico&family=Playfair+Display:wght@700&family=Dancing+Script:wght@700&family=Oswald:wght@700&display=swap" rel="stylesheet">
+
 
     <style>
         * { box-sizing: border-box; }
@@ -83,7 +85,15 @@
             </div>
 
             <div class="btn-grid">
-                <div><label>Police</label><select id="f-fam" onchange="maj()"><option value="'Montserrat'">Moderne</option><option value="'Pacifico'">Manuscrit</option></select></div>
+         <label>Style d'écriture (Police)</label>
+<select id="f-fam" onchange="maj()">
+    <option value="'Montserrat', sans-serif">Moderne (Standard)</option>
+    <option value="'Pacifico', cursive">Manuscrit (Calligraphie)</option>
+    <option value="'Playfair Display', serif">Luxe (Chic & Serif)</option>
+    <option value="'Dancing Script', cursive">Élégante (Fine)</option>
+    <option value="'Oswald', sans-serif">Impact (Fort & Serré)</option>
+</select>
+
                 <div><label>Couleur Texte</label><select id="f-col" onchange="maj()"><option value="black">Noir</option><option value="white">Blanc</option><option value="gold">Or</option><option value="pink">Rose</option></select></div>
             </div>
 
@@ -248,28 +258,47 @@ function sauvegarderConfig() {
 
 // Fonction MAJ pour la couleur du texte et du QR
 function maj() {
-    const doc = document.getElementById('doc-final');
     const render = document.getElementById('render-content');
-    const txtColor = document.getElementById('f-col').value; // Récupère la couleur choisie
+    const doc = document.getElementById('doc-final');
+    
+    // 1. Récupération de la Police et de la Couleur (Tes captures 13970 & 13988)
+    const policeChoisie = document.getElementById('f-fam').value;
+    const couleurChoisie = document.getElementById('f-col').value;
+    const tailleTexte = document.getElementById('size-t').value;
+    const tailleLogo = document.getElementById('size-l').value;
+    const posY = document.getElementById('pos-y').value;
 
-    doc.style.backgroundImage = `url('${currentBg}')`;
-    doc.style.color = txtColor; // Applique la couleur au texte
-    render.style.top = document.getElementById('pos-y').value + "px"; // Position verticale
-    render.style.textAlign = textAlign;
+    // 2. Application du Style Global
+    render.style.fontFamily = policeChoisie;
+    render.style.top = posY + "px"; // Applique la position verticale (Image 13969)
 
+    // 3. Mise à jour du Contenu (Nom, Profession, Infos)
+    // On force la police et la couleur sur chaque ligne
     render.innerHTML = `
-        ${logoData ? `<img src="${logoData}" style="width:${document.getElementById('size-l').value}px;">` : ''}
-        <h2 style="font-size:${document.getElementById('size-t').value}px; color:${txtColor};">${document.getElementById('in-nom').value || 'NOM'}</h2>
-        <p style="color:${txtColor};">${document.getElementById('in-prof').value || ''}</p>
-        <div style="color:${txtColor}; font-size:12px;">${document.getElementById('in-infos').value || ''}</div>
-        <div id="qr" style="margin-top:10px; display:flex; justify-content:center;"></div>
+        ${logoData ? `<img src="${logoData}" style="width:${tailleLogo}px; margin-bottom:10px;">` : ''}
+        <h2 style="margin:0; font-size:${tailleTexte}px; font-family:${policeChoisie}; color:${couleurChoisie};">
+            ${document.getElementById('in-nom').value || 'NOM'}
+        </h2>
+        <p style="margin:5px 0; font-family:${policeChoisie}; color:${couleurChoisie};">
+            ${document.getElementById('in-prof').value || ''}
+        </p>
+        <div style="font-size:12px; margin-top:10px; font-family:${policeChoisie}; color:${couleurChoisie}; white-space:pre-wrap;">
+            ${document.getElementById('in-infos').value || ''}
+        </div>
+        <div id="qr" style="margin-top:15px; display:flex; justify-content:center;"></div>
     `;
 
-    if(document.getElementById('qr-link').value) {
+    // 4. Génération du QR Code avec sa propre couleur (Image 13977)
+    const qrLink = document.getElementById('qr-link').value;
+    const qrColor = document.getElementById('qr-col').value;
+    
+    if(qrLink) {
         new QRCode(document.getElementById("qr"), { 
-            text: document.getElementById('qr-link').value, 
-            width: 70, height: 70, 
-            colorDark: document.getElementById('qr-col').value // Couleur QR
+            text: qrLink, 
+            width: 70, 
+            height: 70, 
+            colorDark: qrColor, // Utilise la couleur choisie pour le QR
+            colorLight: "rgba(0,0,0,0)" 
         });
     }
 }
@@ -325,6 +354,7 @@ function closePay() {
 </script>
 </body>
 </html>
+
 
 
 
