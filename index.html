@@ -191,7 +191,7 @@
 function maj() {
     const doc = document.getElementById('doc-final');
     const render = document.getElementById('render-content');
-    
+    let color = document.getElementById('color-select').value;
     // Rétablit l'image de fond
     doc.style.backgroundImage = `url('${currentBg}')`;
     
@@ -267,6 +267,7 @@ function debloquerAdmin() {
 </script>
 </body>
 </html>
+
 
 
 
