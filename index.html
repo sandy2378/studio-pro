@@ -116,18 +116,23 @@
         </div>
     </div>
 
+    
     <div id="modal-pay">
-        <div class="modal-content">
-            <h3 style="color:#27ae60;">💳 PAIEMENT SÉCURISÉ</h3>
-            <p style="font-size:13px;">Pour débloquer le <b>PDF Haute Définition</b>, veuillez effectuer le transfert sur :</p>
-            <div style="background:#f8f9fa; padding:15px; border:1px dashed #27ae60; font-weight:bold; font-size:14px; margin:10px 0;">
-                RIB : TN59 12 30100 00133 06217243
-            </div>
-            <p style="font-size:12px;">Une fois le transfert fait, envoyez la capture ici :</p>
-            <a href="https://wa.me/21646248269?text=Bonjour,%20je%20viens%20d'effectuer%20le%20paiement%20pour%20Studio%20Pro." target="_blank" class="btn-action bg-green" style="width:100%; margin-bottom:10px;">💬 ENVOYER SUR WHATSAPP</a>
-            <button class="btn-action bg-red" style="width:100%;" onclick="closePay()">FERMER</button>
-        </div>
+    <div class="modal-content">
+        <h3 style="color:#27ae60;">💳 PAIEMENT SÉCURISÉ</h3>
+        <p style="font-size:13px;">RIB : <b>TN59 12 30100 00133 06217243</b></p>
+        
+        <a href="https://wa.me/21646248269?text=J'ai effectué le paiement" target="_blank" class="btn-action bg-green" style="width:100%; margin-bottom:10px; text-decoration:none;">💬 ENVOYER LE REÇU (WHATSAPP)</a>
+        
+        <hr style="border:0; border-top:1px solid #eee; margin:15px 0;">
+        
+        <p style="font-size:12px; color:#666;">Déjà payé ? Entre ton code ici :</p>
+        <button class="btn-action bg-blue" style="width:100%; margin-bottom:10px;" onclick="debloquerAdmin()">🛡️ ENTRER MON CODE DE DÉBLOCAGE</button>
+        
+        <button class="btn-action bg-red" style="width:100%;" onclick="closePay()">FERMER</button>
     </div>
+</div>
+
 
 <script>
     const BASE = "https://raw.githubusercontent.com/sandy2378/studio-pro/main/images%20studio%20pro/";
@@ -226,3 +231,4 @@
 </script>
 </body>
 </html>
+
