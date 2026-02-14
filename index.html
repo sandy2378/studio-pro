@@ -136,12 +136,14 @@
              <hr>
             
 
-        <div id="zone-code-secret" style="display:none; margin-top:15px; border-top:1px solid #eee; padding-top:10px;">
-    <p style="font-size:11px; color:#666;">Une fois le paiement validé, entre ton code :</p>
-    <button class="btn-action bg-blue" style="width:100%;" onclick="ouvrirPromptCode()">
+        
+          <div id="bloc-deblocage" style="display: none; margin-top: 15px;">
+    <p style="font-size: 11px; color: #666;">Une fois le message envoyé, entre ton code :</p>
+    <button class="btn-action bg-blue" style="width: 100%;" onclick="debloquerAdmin()">
         🛡️ ENTRER MON CODE DE DÉBLOCAGE
     </button>
 </div>
+  
 
              </div>
 
@@ -233,11 +235,17 @@ function montrerSaisieCode() {
     document.getElementById('section-code').style.display = 'block';
 }
 
+
+function libererBoutonCode() {
+    // On cherche l'élément par son ID et on l'affiche
+    var bloc = document.getElementById('bloc-deblocage');
+    bloc.style.display = 'block'; 
+}
+
+// N'oubliez pas de le recacher quand on ferme la fenêtre
 function closePay() {
-    // On referme le modal
     document.getElementById('modal-pay').style.display = 'none';
-    // IMPORTANT : On recache la section pour la prochaine fois
-    document.getElementById('section-code').style.display = 'none';
+    document.getElementById('bloc-deblocage').style.display = 'none';
 }
 
     function debloquerAdmin() {
@@ -294,6 +302,7 @@ function closePay() {
 </script>
 </body>
 </html>
+
 
 
 
