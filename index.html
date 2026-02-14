@@ -251,26 +251,25 @@ function libererBoutonCode() {
             });
         }
     }
-function debloquerAdmin() {
-    // On demande le code que TOI seul a donné sur WhatsApp
-    let saisie = prompt("Entrez le code de validation reçu par l'administrateur :");
-    
-    // Tu peux créer un code fixe difficile (ex: "PRO-99-OK") 
-    // ou garder ton système de date (VENT1402)
-    const d = new Date();
-    const codeSecret = "VENT" + String(d.getDate()).padStart(2, '0') + String(d.getMonth() + 1).padStart(2, '0');
 
-    if (saisie === codeSecret || saisie === "STUDIO2026") { 
+
+   function debloquerAdmin() {
+    // Ici, tu mets le mot secret que tu as donné au client sur WhatsApp
+    // Tu peux le changer dans ton fichier .html quand tu veux
+    const motActuel = "VENT"; 
+
+    let saisie = prompt("Entrez le code de validation reçu sur WhatsApp :");
+
+    if (saisie === motActuel) {
         document.getElementById('btn-p').disabled = false;
         document.getElementById('btn-p').style.opacity = "1";
         alert("✅ Accès Pro débloqué !");
         closePay();
     } else {
-        alert("❌ Code invalide. Veuillez payer et envoyer le reçu sur WhatsApp.");
+        alert("❌ Code incorrect.");
     }
 }
-
-    
+ 
 
     function sauvegarderConfig() {
         const config = { nom: document.getElementById('in-nom').value, prof: document.getElementById('in-prof').value, infos: document.getElementById('in-infos').value, qr: document.getElementById('qr-link').value, bg: currentBg };
@@ -318,6 +317,7 @@ function debloquerAdmin() {
     btnPdf.style.opacity = "0.5";
     
     alert("✅ Téléchargement terminé. Pour une nouvelle carte, veuillez demander un nouveau code de validation.");
+        location.reload(); 
 }
 
 
@@ -325,6 +325,7 @@ function debloquerAdmin() {
 </script>
 </body>
 </html>
+
 
 
 
