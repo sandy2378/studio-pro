@@ -112,18 +112,43 @@
             </div>
         </div>
 
-        <div id="doc-final">
-            <div id="render-content"></div>
-        </div>
+        
 
-        <div style="background: #2d3436; color: white; padding: 15px; border-radius: 15px; margin-top: 15px; text-align: center;">
-            <h4 style="color:#f39c12; margin:0 0 10px 0;">🛡️ Sauvegarde & Secours</h4>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                <button class="btn-action bg-green" onclick="sauvegarderConfig()">📥 Télécharger (.txt)</button>
-                <label class="btn-action bg-orange">📤 Restaurer<input type="file" style="display:none" onchange="restaurerConfig(event)"></label>
-            </div>
+        
+    
+
+<h2 id="main-title" onclick="activerAdmin()" style="color:#2563eb; margin: 10px 0; cursor:pointer; user-select: none;">Studio Premium Pro</h2>
+
+<div class="container">
+    <div id="zone-edition">
+        <div class="btn-group">
+            <button class="btn-action bg-blue" onclick="telechargerImage()">📥 IMAGE</button>
+            <button id="btn-pdf" class="btn-action bg-orange" onclick="genererPDF()" disabled style="opacity:0.5;">📄 PDF PRO</button>
         </div>
     </div>
+
+    <div class="preview-area">
+        <div id="doc-final"></div>
+    </div>
+
+    <div id="admin-secret-section" style="display:none;">
+        <div class="admin-panel">
+            <h4>🛠️ Ajouter Modèle Perso</h4>
+            <input type="text" id="admin-name" placeholder="Nom du modèle">
+            <label class="file-label" style="background:#00b894;">📸 Choisir Image<input type="file" id="admin-file" accept="image/*" style="display:none"></label>
+            <button onclick="sauvegarderNouveauModele()" style="width:100%; padding:10px; margin-top:10px; border:none; border-radius:8px; cursor:pointer; font-weight:bold; background:white;">💾 Enregistrer</button>
+        </div>
+
+        <div class="security-panel">
+            <h4>🛡️ Sauvegarde & Secours</h4>
+            <button onclick="sauvegarderVersFichier()" style="width:100%; padding:10px; margin-bottom:10px; border:none; border-radius:8px; background:#27ae60; color:white; font-weight:bold;">📥 Télécharger Sauvegarde (.txt)</button>
+            <label class="file-label" style="background:#e67e22; font-weight:bold;">
+                📤 Restaurer Sauvegarde
+                <input type="file" style="display:none" onchange="restaurerDepuisFichier(event)">
+            </label>
+        </div>
+    </div>
+</div>
         <div id="modal-pay">
         <div class="modal-content">
             <h3 style="color:#27ae60;">💳 PAIEMENT SÉCURISÉ</h3>
@@ -158,6 +183,79 @@
     let currentBg = BASE + "visite1.jpg";
     let logoData = null;
     let textAlign = 'center';
+    let clicks = 0;
+    let isAdmin = false;
+    let mesModeles = JSON.parse(localStorage.getItem('studio_mega_v6')) || {};
+
+    // FONCTION CLIC 5 FOIS
+    function activerAdmin() {
+        clicks++;
+        if (clicks >= 5) {
+            isAdmin = true;
+            document.getElementById('admin-secret-section').style.display = 'block';
+            document.body.classList.add('admin-mode'); // Active l'affichage des croix "X"
+            actualiserMenu(); // Rafraîchit le menu pour montrer les badges de suppression
+            alert("🔓 Mode Admin Activé : Sauvegarde et Suppression disponibles.");
+            clicks = 0; // Reset pour éviter de relancer l'alerte
+        }
+    }
+
+    function actualiserMenu() {
+        const menu = document.getElementById('menu-container');
+        // On nettoie les anciens modèles perso avant de les réafficher
+        document.querySelectorAll('.btn-custom-container').forEach(el => el.remove());
+        
+        const keys = Object.keys(mesModeles);
+        document.getElementById('cat-custom').style.display = keys.length > 0 ? "block" : "none";
+
+        keys.forEach(id => {
+            const div = document.createElement('div');
+            div.className = "btn-custom-container";
+            // On ajoute le bouton de suppression (X) uniquement si isAdmin est vrai
+            div.innerHTML = `
+                <button class="tab-btn" onclick="changerStyle('${id}', this)">⭐ ${mesModeles[id].name}</button>
+                ${isAdmin ? `<div class="delete-badge" style="display:flex; position:absolute; top:-5px; right:-5px; background:red; color:white; border-radius:50%; width:20px; height:20px; align-items:center; justify-content:center; cursor:pointer; font-size:12px; border:2px solid white;" onclick="supprimerModele('${id}', event)">×</div>` : ''}
+            `;
+            menu.appendChild(div);
+        });
+    }
+
+    function supprimerModele(id, e) {
+        e.stopPropagation(); // Empêche de sélectionner le style en cliquant sur X
+        if(confirm("Supprimer ce modèle définitivement ?")) {
+            delete mesModeles[id];
+            localStorage.setItem('studio_mega_v6', JSON.stringify(mesModeles));
+            actualiserMenu();
+        }
+    }
+
+    // ... (Garder tes autres fonctions : maj, telechargerImage, genererPDF, sauvegarderVersFichier, etc.) ...
+
+    function sauvegarderVersFichier() {
+        const data = JSON.stringify(mesModeles);
+        const blob = new Blob([data], {type: 'text/plain'});
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'sauvegarde_studio_pro.txt';
+        a.click();
+    }
+
+    function restaurerDepuisFichier(e) {
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+            try {
+                mesModeles = JSON.parse(ev.target.result);
+                localStorage.setItem('studio_mega_v6', JSON.stringify(mesModeles));
+                actualiserMenu();
+                alert("✅ Restauration réussie !");
+            } catch(err) {
+                alert("❌ Erreur : Fichier invalide.");
+            }
+        };
+        reader.readAsText(e.target.files[0]);
+    }
+
+    window.onload = () => { actualiserMenu(); maj(); };
 
     // Génération du menu
     const menu = document.getElementById('menu-v');
@@ -325,6 +423,7 @@ function libererBoutonCode() {
 </script>
 </body>
 </html>
+
 
 
 
