@@ -33,6 +33,38 @@
         #render-content { width: 100%; transition: 0.2s; position: absolute; }
         #modal-pay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; justify-content: center; align-items: center; padding: 20px; }
         .modal-content { background: white; padding: 20px; border-radius: 15px; text-align: center; width: 100%; max-width: 350px; }
+    /* Style du bouton supprimer (la croix rouge) */
+.btn-custom-container {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+.delete-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: #e74c3c; /* Rouge */
+    color: white;
+    border-radius: 50%;
+    width: 22px;
+    height: 22px;
+    display: none; /* Caché par défaut */
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 20;
+    border: 2px solid white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+/* Affiche la croix quand le mode admin est actif */
+.admin-mode .delete-badge {
+    display: flex;
+}
+
     </style>
 </head>
 <body>
@@ -417,6 +449,7 @@ function libererBoutonCode() {
 </script>
 </body>
 </html>
+
 
 
 
