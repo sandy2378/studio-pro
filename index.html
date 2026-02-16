@@ -30,7 +30,17 @@
         .btn-action { padding: 12px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; color: white; font-size: 11px; text-transform: uppercase; display: flex; align-items: center; justify-content: center; text-decoration: none;}
         .bg-blue { background: #2563eb; } .bg-green { background: #27ae60; } .bg-orange { background: #f39c12; } 
         .bg-purple { background: #6c5ce7; } .bg-red { background: #e74c3c; } .bg-grey { background: #636e72; }
-        #render-content { width: 100%; transition: 0.2s; position: absolute; }
+        
+       #render-content { 
+    width: 100%; 
+    transition: 0.2s; 
+    position: absolute; /* Indispensable pour flotter sur l'image */
+    top: 150px;         /* Position de départ */
+    left: 0;            /* Aligne bien le texte au centre */
+    z-index: 10;        /* Force le texte à passer devant l'image */
+    pointer-events: none; /* Permet de cliquer à travers le texte si besoin */
+}
+
         #modal-pay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; justify-content: center; align-items: center; padding: 20px; }
         .modal-content { background: white; padding: 20px; border-radius: 15px; text-align: center; width: 100%; max-width: 350px; }
     /* Style du bouton supprimer (la croix rouge) */
@@ -377,7 +387,35 @@ function libererBoutonCode() {
             });
         }
     }
+function changerStyle(id, btn) {
+    // Désactive les autres boutons
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    // Active le bouton cliqué
+    btn.classList.add('active');
+    
+    // Si c'est un modèle perso, on prend l'image du localStorage, sinon c'est un bug
+    if(mesModeles[id]) {
+        currentBg = mesModeles[id].img;
+    }
+    maj(); // On met à jour l'affichage
+}
 
+function sauvegarderNouveauModele() {
+    const name = document.getElementById('admin-name').value;
+    const file = document.getElementById('admin-file').files[0];
+    
+    if(!name || !file) return alert("Donne un nom et choisis une image !");
+    
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        const id = "custom-" + Date.now();
+        mesModeles[id] = { name: name, img: e.target.result };
+        localStorage.setItem('studio_mega_v6', JSON.stringify(mesModeles));
+        actualiserMenu();
+        alert("✅ Modèle enregistré avec succès !");
+    };
+    reader.readAsDataURL(file);
+}
 
    function debloquerAdmin() {
     // Ici, tu mets le mot secret que tu as donné au client sur WhatsApp
@@ -451,6 +489,7 @@ function libererBoutonCode() {
 </script>
 </body>
 </html>
+
 
 
 
