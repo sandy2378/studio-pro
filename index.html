@@ -464,26 +464,24 @@ function sauvegarderNouveauModele() {
         const canvas = await html2canvas(document.getElementById('doc-final'), {useCORS: true, scale: 2});
         const a = document.createElement('a'); a.download = 'carte.png'; a.href = canvas.toDataURL(); a.click();
     }
-
-    
-    async function saveP() {
+async function saveP() {
     const el = document.getElementById('doc-final');
     const canvas = await html2canvas(el, {scale: 3, useCORS: true});
     const { jsPDF } = window.jspdf;
     const pdf = new jsPDF(el.offsetWidth > el.offsetHeight ? 'l' : 'p', 'px', [el.offsetWidth, el.offsetHeight]);
     pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, el.offsetWidth, el.offsetHeight);
     
-    // 1. On lance le téléchargement
+    // On lance le téléchargement
     pdf.save("carte-pro.pdf");
 
-    // 2. SÉCURITÉ : On re-bloque le bouton immédiatement !
-    const btnPdf = document.getElementById('btn-p');
-    btnPdf.disabled = true;
-    btnPdf.style.opacity = "0.5";
+    // On affiche juste un message de succès sans recharger la page
+    alert("✅ Votre carte a été téléchargée avec succès !");
     
-    alert("✅ Téléchargement terminé. Pour une nouvelle carte, veuillez demander un nouveau code de validation.");
-        location.reload(); 
+    // Optionnel : Si vous voulez laisser le bouton actif pour d'autres modifs :
+    // Ne rien ajouter ici.
 }
+    
+    
 
 
     window.onload = () => { setTimeout(() => { document.querySelector('.tab-btn').click(); }, 500); };
