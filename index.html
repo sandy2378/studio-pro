@@ -466,6 +466,9 @@ function sauvegarderNouveauModele() {
         const canvas = await html2canvas(document.getElementById('doc-final'), {useCORS: true, scale: 2});
         const a = document.createElement('a'); a.download = 'carte.png'; a.href = canvas.toDataURL(); a.click();
     }
+
+    
+    
 async function saveP() {
     const el = document.getElementById('doc-final');
     const canvas = await html2canvas(el, {scale: 3, useCORS: true});
@@ -473,17 +476,9 @@ async function saveP() {
     const pdf = new jsPDF(el.offsetWidth > el.offsetHeight ? 'l' : 'p', 'px', [el.offsetWidth, el.offsetHeight]);
     pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, el.offsetWidth, el.offsetHeight);
     
-    // On lance le téléchargement
-    pdf.save("carte-pro.pdf");
-
-    // On affiche juste un message de succès sans recharger la page
-    alert("✅ Votre carte a été téléchargée avec succès !");
-    
-    // Optionnel : Si vous voulez laisser le bouton actif pour d'autres modifs :
-    // Ne rien ajouter ici.
+    pdf.save("carte-pro-gratuite.pdf");
+    alert("✅ Votre carte PDF gratuite a été générée !");
 }
-    
-    
 
 
     window.onload = () => { setTimeout(() => { document.querySelector('.tab-btn').click(); }, 500); };
